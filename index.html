@@ -1,0 +1,1182 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1f4d3f">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Rampenisse-verkstedet</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Berkshire+Swash&family=Figtree:wght@400;500;600;700&family=Caveat:wght@500;700&display=swap">
+<style>
+/* Layout: en julekalender med 24 luker er hjertet; resten er verktøy rundt den. Mobil: bunnmeny. Desktop: toppmeny + bredere kort. */
+:root {
+  --snow: #f4f7f5;          /* bakgrunn: snøhvit med grantone */
+  --paper: #ffffff;         /* kort */
+  --ink: #17302a;           /* tekst: mørk gran */
+  --muted: #5b6f69;
+  --line: #d9e2de;
+  --spruce: #1f4d3f;        /* primær grønn */
+  --spruce-soft: #e3eee9;
+  --berry: #b3263a;         /* tyttebær-rød aksent */
+  --berry-soft: #f8e4e6;
+  --gold: #c99a2e;          /* stearinlys-gull */
+  --gold-soft: #fbf1d8;
+  --bar: #1f4d3f;           /* toppstripe */
+  --door: #24584a;          /* lukket luke */
+  --door-ink: #f4f7f5;
+  --ok: #2f7a4b; --ok-soft: #e1f1e6;
+  --warn: #a46a07; --warn-soft: #fbefd6;
+  --shadow: 0 1px 2px rgba(23,48,42,.06), 0 6px 20px rgba(23,48,42,.07);
+  --f-display: "Berkshire Swash", Georgia, "Times New Roman", serif;
+  --f-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-hand: "Caveat", "Bradley Hand", "Comic Sans MS", cursive;
+  --r: 14px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --snow: #0e1a1f; --paper: #15252b; --ink: #e9f0ec; --muted: #9fb2ab; --line: #263a40;
+  --spruce: #7cc3a5; --spruce-soft: #1b3330; --berry: #f0697a; --berry-soft: #3a1d24;
+  --gold: #e8bf5c; --gold-soft: #3a3020; --bar: #143a31; --door: #1d3d37; --door-ink: #e9f0ec;
+  --ok: #6fcf93; --ok-soft: #173326; --warn: #f0b850; --warn-soft: #3a2e17;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.25); color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --snow: #0e1a1f; --paper: #15252b; --ink: #e9f0ec; --muted: #9fb2ab; --line: #263a40;
+  --spruce: #7cc3a5; --spruce-soft: #1b3330; --berry: #f0697a; --berry-soft: #3a1d24;
+  --gold: #e8bf5c; --gold-soft: #3a3020; --bar: #143a31; --door: #1d3d37; --door-ink: #e9f0ec;
+  --ok: #6fcf93; --ok-soft: #173326; --warn: #f0b850; --warn-soft: #3a2e17;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.25); color-scheme: dark; }
+
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body { background: var(--snow); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bar); }
+#snow { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+h1, h2, h3 { text-wrap: balance; margin: 0; line-height: 1.2; }
+h2 { font-family: var(--f-display); font-weight: 400; font-size: 1.75rem; color: var(--spruce); }
+h3 { font-size: 1.05rem; font-weight: 700; }
+p { margin: 0; }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+a { color: var(--berry); }
+
+/* Topp */
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--bar); color: #f4f7f5; }
+.top-in { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; gap: 12px; padding-block: 10px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; min-width: 0; }
+.brand-mark { width: 34px; height: 34px; flex: none; }
+.brand-name { font-family: var(--f-display); font-size: 1.35rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.top-nav { display: none; gap: 2px; margin-left: auto; }
+.top-nav a { color: #e6efe9; text-decoration: none; padding: 7px 12px; border-radius: 999px; font-weight: 600; font-size: .92rem; }
+.top-nav a[aria-current="page"] { background: rgba(255,255,255,.16); color: #fff; }
+.top-actions { margin-left: auto; display: flex; gap: 6px; align-items: center; }
+.sync { font-size: .75rem; padding: 3px 9px; border-radius: 999px; background: rgba(255,255,255,.14); white-space: nowrap; }
+.icon-btn { background: transparent; border: 0; color: inherit; width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; }
+.icon-btn:hover { background: rgba(255,255,255,.14); }
+.icon-btn svg { width: 22px; height: 22px; }
+
+/* Bunnmeny */
+.bottom-nav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; background: var(--paper); border-top: 1px solid var(--line); display: grid; grid-template-columns: repeat(6, 1fr); padding-bottom: env(safe-area-inset-bottom, 0px); padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-area-inset-right, 0px); }
+.bottom-nav a { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 2px 7px; text-decoration: none; color: var(--muted); font-size: .7rem; font-weight: 600; }
+.bottom-nav a svg { width: 22px; height: 22px; }
+.bottom-nav a[aria-current="page"] { color: var(--berry); }
+@media (min-width: 860px) { .top-nav { display: flex; } .top-actions { margin-left: 8px; } .bottom-nav { display: none; } main { padding-bottom: 48px !important; } }
+
+main { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding-top: 20px; padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.view { display: grid; gap: 18px; }
+.view-head { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: end; justify-content: space-between; }
+.view-head p { color: var(--muted); max-width: 60ch; }
+
+.card { background: var(--paper); border: 1px solid var(--line); border-radius: var(--r); padding: 18px; box-shadow: var(--shadow); min-width: 0; }
+.card.flat { box-shadow: none; }
+.grid-2 { display: grid; gap: 18px; grid-template-columns: 1fr; }
+@media (min-width: 760px) { .grid-2 { grid-template-columns: 1fr 1fr; } .grid-2.wide-left { grid-template-columns: 1.4fr 1fr; } }
+.stack { display: grid; gap: 12px; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.muted { color: var(--muted); }
+.small { font-size: .85rem; }
+.label { font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; color: var(--muted); }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); padding: 8px 14px; border-radius: 999px; font-weight: 600; cursor: pointer; text-decoration: none; font-size: .92rem; line-height: 1.2; }
+.btn:hover { border-color: var(--spruce); }
+.btn svg { width: 17px; height: 17px; }
+.btn.primary { background: var(--berry); border-color: var(--berry); color: #fff; }
+:root[data-theme="dark"] .btn.primary { color: #1a0d10; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .btn.primary { color: #1a0d10; } }
+.btn.green { background: var(--spruce); border-color: var(--spruce); color: var(--snow); }
+.btn.ghost { background: transparent; border-color: transparent; }
+.btn.ghost:hover { background: var(--spruce-soft); }
+.btn.sm { padding: 5px 10px; font-size: .82rem; }
+.btn.danger { color: var(--berry); }
+.btn[disabled] { opacity: .5; cursor: not-allowed; }
+
+.chip { display: inline-flex; align-items: center; gap: 4px; padding: 2px 9px; border-radius: 999px; font-size: .75rem; font-weight: 600; background: var(--spruce-soft); color: var(--spruce); white-space: nowrap; }
+.chip.berry { background: var(--berry-soft); color: var(--berry); }
+.chip.gold { background: var(--gold-soft); color: var(--warn); }
+.chip.ok { background: var(--ok-soft); color: var(--ok); }
+.chip.plain { background: transparent; border: 1px solid var(--line); color: var(--muted); }
+.chip-toggle { cursor: pointer; border: 1px solid var(--line); background: var(--paper); color: var(--ink); padding: 5px 11px; font-size: .82rem; }
+.chip-toggle[aria-pressed="true"] { background: var(--spruce); color: var(--snow); border-color: var(--spruce); }
+
+.dots { display: inline-flex; gap: 2px; vertical-align: middle; }
+.dots i { width: 7px; height: 7px; border-radius: 50%; background: var(--line); display: block; }
+.dots.effort i.on { background: var(--spruce); }
+.dots.mess i.on { background: var(--berry); }
+
+/* Hero / nedtelling */
+.hero { position: relative; overflow: hidden; background: var(--spruce); color: #f4f7f5; border-radius: 20px; padding: 22px; display: grid; gap: 14px; }
+:root[data-theme="dark"] .hero { background: #183a32; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .hero { background: #183a32; } }
+.hero .eyebrow { font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; opacity: .8; }
+.hero-big { font-family: var(--f-display); font-size: clamp(2.2rem, 7vw, 3.4rem); line-height: 1.05; }
+.hero-sub { opacity: .88; max-width: 52ch; }
+.hero .btn { border-color: rgba(255,255,255,.35); background: rgba(255,255,255,.1); color: #fff; }
+.hero .btn.primary { background: var(--gold); border-color: var(--gold); color: #2a1e05; }
+.hero-hat { position: absolute; right: -10px; bottom: -16px; width: 150px; opacity: .95; pointer-events: none; }
+@media (max-width: 520px) { .hero-hat { width: 96px; opacity: .5; } }
+.progress { height: 8px; border-radius: 99px; background: rgba(255,255,255,.18); overflow: hidden; max-width: 420px; }
+.progress span { display: block; height: 100%; background: var(--gold); border-radius: 99px; }
+
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+@media (max-width: 560px) { .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.stat { background: var(--paper); border: 1px solid var(--line); border-radius: var(--r); padding: 12px 14px; }
+.stat b { display: block; font-family: var(--f-display); font-weight: 400; font-size: 1.9rem; color: var(--spruce); line-height: 1.1; font-variant-numeric: tabular-nums; }
+.stat span { font-size: .8rem; color: var(--muted); font-weight: 600; }
+
+.today-card { border-left: 0; display: grid; gap: 10px; }
+.today-card .t-title { font-family: var(--f-display); font-size: 1.5rem; color: var(--berry); line-height: 1.15; }
+.list { display: grid; gap: 0; }
+.list > * { padding: 10px 0; border-top: 1px solid var(--line); }
+.list > *:first-child { border-top: 0; padding-top: 0; }
+.mini-day { display: grid; grid-template-columns: 44px 1fr auto; gap: 10px; align-items: center; cursor: pointer; background: none; border: 0; text-align: left; width: 100%; color: inherit; }
+.mini-num { width: 44px; height: 44px; border-radius: 10px; background: var(--door); color: var(--door-ink); display: grid; place-items: center; font-family: var(--f-display); font-size: 1.3rem; }
+.mini-day .mt { font-weight: 600; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.check { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
+.check input { width: 20px; height: 20px; accent-color: var(--spruce); margin-top: 1px; flex: none; }
+.check.done span { text-decoration: line-through; color: var(--muted); }
+
+/* Kalender-luker */
+.calendar { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+@media (max-width: 520px) { .calendar { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; } }
+.door { position: relative; aspect-ratio: 1 / 1.08; max-width: 100%; border-radius: 12px; border: 0; padding: 10px; cursor: pointer; text-align: left; display: flex; flex-direction: column; justify-content: space-between; background: var(--door); color: var(--door-ink); box-shadow: inset 0 0 0 2px rgba(255,255,255,.08), var(--shadow); overflow: hidden; transition: transform .15s ease; }
+.door:hover { transform: translateY(-2px); }
+.door::after { content: ""; position: absolute; inset: 6px; border: 1.5px dashed rgba(255,255,255,.22); border-radius: 8px; pointer-events: none; }
+.door .num { font-family: var(--f-display); font-size: 2.2rem; line-height: 1; }
+.door .wd { font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; opacity: .75; font-weight: 700; }
+.door .dt { font-size: .8rem; font-weight: 600; line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; position: relative; z-index: 1; }
+.door .top-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 4px; position: relative; z-index: 1; }
+.door .badge { font-size: .65rem; font-weight: 700; padding: 2px 7px; border-radius: 99px; background: rgba(255,255,255,.18); white-space: nowrap; }
+.door.s-tom { background: var(--paper); color: var(--muted); box-shadow: inset 0 0 0 1.5px var(--line); }
+.door.s-tom::after { border-color: var(--line); }
+.door.s-tom .num { color: var(--line); }
+:root[data-theme="dark"] .door.s-tom .num { color: #35505a; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .door.s-tom .num { color: #35505a; } }
+.door.s-klar { background: #8a5d0d; }
+.door.s-utfort { background: var(--berry); color: #fff; }
+.door.s-hoppet { background: #6b7a76; }
+.door.weekend .wd { color: var(--gold); opacity: 1; }
+.door.s-utfort .wd, .door.s-klar .wd { color: inherit; }
+.door.is-today { outline: 3px solid var(--gold); outline-offset: 2px; }
+.door .ph { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: .28; }
+@media (max-width: 520px) { .door { padding: 7px; } .door .num { font-size: 1.6rem; } .door .dt { font-size: .7rem; -webkit-line-clamp: 2; } .door .badge { display: none; } }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .8rem; color: var(--muted); }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: -2px; margin-right: 5px; }
+
+/* Ideer */
+.toolbar { display: grid; gap: 10px; }
+.search { width: 100%; padding: 10px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--paper); }
+.ideas { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+@media (max-width: 400px) { .ideas { grid-template-columns: 1fr; } }
+.idea { display: grid; gap: 8px; grid-template-rows: auto auto 1fr auto; }
+.idea h3 { display: flex; justify-content: space-between; gap: 8px; align-items: start; }
+.idea .desc { color: var(--muted); font-size: .9rem; }
+.idea .meta { display: flex; flex-wrap: wrap; gap: 6px 12px; font-size: .78rem; color: var(--muted); align-items: center; }
+.fav { background: none; border: 0; cursor: pointer; color: var(--line); padding: 0; width: 28px; height: 28px; flex: none; display: grid; place-items: center; }
+.fav svg { width: 22px; height: 22px; }
+.fav[aria-pressed="true"] { color: var(--gold); }
+.used-in { font-size: .75rem; color: var(--ok); font-weight: 600; }
+
+/* Skjema */
+.field { display: grid; gap: 5px; }
+.field > span { font-size: .8rem; font-weight: 700; color: var(--muted); }
+.input, textarea.input, select.input { width: 100%; padding: 9px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--snow); color: var(--ink); }
+textarea.input { min-height: 80px; resize: vertical; }
+.form-grid { display: grid; gap: 12px; grid-template-columns: 1fr 1fr; }
+.form-grid .full { grid-column: 1 / -1; }
+@media (max-width: 520px) { .form-grid { grid-template-columns: 1fr; } }
+.seg { display: flex; flex-wrap: wrap; gap: 6px; }
+.stars { display: inline-flex; gap: 2px; }
+.stars button { background: none; border: 0; cursor: pointer; color: var(--line); padding: 2px; }
+.stars button svg { width: 26px; height: 26px; }
+.stars button.on { color: var(--gold); }
+.photos { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 8px; }
+.photo { position: relative; aspect-ratio: 1; max-width: 100%; border-radius: 10px; overflow: hidden; background: var(--spruce-soft); }
+.photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.photo button { position: absolute; top: 4px; right: 4px; width: 26px; height: 26px; border-radius: 50%; border: 0; background: rgba(0,0,0,.6); color: #fff; cursor: pointer; display: grid; place-items: center; }
+.upload { border: 1.5px dashed var(--line); border-radius: 10px; display: grid; place-items: center; aspect-ratio: 1; cursor: pointer; color: var(--muted); font-size: .8rem; text-align: center; padding: 6px; }
+.upload input { display: none; }
+
+/* Modal */
+.modal-wrap { position: fixed; inset: 0; z-index: 50; background: rgba(8,20,18,.55); display: flex; align-items: flex-end; justify-content: center; }
+@media (min-width: 700px) { .modal-wrap { align-items: center; padding: 24px; } }
+.modal { background: var(--paper); width: 100%; max-width: 720px; max-height: 92vh; overflow: auto; border-radius: 20px 20px 0 0; padding: 18px; grid-auto-rows: max-content; padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: max(18px, env(safe-area-inset-right, 0px)); padding-bottom: calc(18px + env(safe-area-inset-bottom, 0px)); display: grid; gap: 16px; }
+@media (min-width: 700px) { .modal { border-radius: 20px; } }
+.modal-head { display: flex; gap: 12px; align-items: center; }
+.modal-head .mini-num { width: 52px; height: 52px; font-size: 1.6rem; }
+.modal-head h2 { font-size: 1.5rem; }
+.modal-close { margin-left: auto; background: var(--spruce-soft); color: var(--spruce); }
+.modal-close:hover { background: var(--line); }
+.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line); overflow-x: auto; }
+.tabs button { background: none; border: 0; padding: 8px 12px; font-weight: 700; color: var(--muted); border-bottom: 3px solid transparent; cursor: pointer; white-space: nowrap; }
+.tabs button[aria-selected="true"] { color: var(--berry); border-bottom-color: var(--berry); }
+.sticky-actions { position: sticky; bottom: calc(-18px - env(safe-area-inset-bottom, 0px)); background: var(--paper); padding: 12px 0 0; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; }
+.pick-list { display: grid; gap: 6px; max-height: 320px; overflow: auto; }
+.pick { text-align: left; border: 1px solid var(--line); background: var(--snow); border-radius: 10px; padding: 8px 10px; cursor: pointer; display: grid; gap: 2px; }
+.pick:hover { border-color: var(--spruce); }
+.pick b { font-weight: 600; }
+
+/* Dagbok */
+.journal { display: grid; gap: 14px; }
+.entry { display: grid; grid-template-columns: 64px 1fr; gap: 14px; }
+.entry .mini-num { width: 64px; height: 64px; font-size: 1.9rem; background: var(--berry); color: #fff; }
+.entry .quote { font-family: var(--f-hand); font-size: 1.35rem; line-height: 1.25; color: var(--spruce); }
+.entry .photos { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+@media (max-width: 520px) { .entry { grid-template-columns: 1fr; } }
+
+/* Handleliste */
+.shop-item { display: flex; gap: 10px; align-items: flex-start; justify-content: space-between; }
+.shop-days { font-size: .75rem; color: var(--muted); }
+
+/* Brev */
+.letter { background: #fffaf0; color: #2b2116; border-radius: 6px; padding: 28px 26px; font-family: var(--f-hand); font-size: 1.5rem; line-height: 1.35; white-space: pre-wrap; box-shadow: var(--shadow); position: relative; border: 1px solid #eadfc8; min-height: 300px; overflow-wrap: anywhere; }
+.letter::before { content: ""; position: absolute; inset: 10px; border: 2px solid #c8312f; border-radius: 3px; pointer-events: none; opacity: .5; }
+.letter .sig { display: block; margin-top: 14px; color: #c8312f; font-weight: 700; }
+
+/* Toast */
+.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(84px + env(safe-area-inset-bottom, 0px)); z-index: 60; background: var(--ink); color: var(--snow); padding: 10px 16px; border-radius: 999px; font-weight: 600; font-size: .9rem; box-shadow: var(--shadow); max-width: calc(100% - 32px); text-align: center; }
+@media (min-width: 860px) { .toast { bottom: 28px; } }
+.empty { text-align: center; padding: 28px 16px; color: var(--muted); display: grid; gap: 10px; justify-items: center; }
+.empty svg { width: 64px; height: 64px; color: var(--line); }
+.callout { background: var(--gold-soft); border: 1px solid transparent; border-radius: var(--r); padding: 14px 16px; display: grid; gap: 6px; }
+.callout.green { background: var(--spruce-soft); }
+.tip-list { display: grid; gap: 12px; counter-reset: tip; }
+.tip-list li { list-style: none; display: grid; grid-template-columns: 30px 1fr; gap: 10px; }
+.tip-list li::before { counter-increment: tip; content: counter(tip); width: 28px; height: 28px; border-radius: 50%; background: var(--berry-soft); color: var(--berry); font-weight: 700; display: grid; place-items: center; font-size: .85rem; }
+.tip-list { padding: 0; margin: 0; }
+details summary { cursor: pointer; font-weight: 700; }
+@media (prefers-reduced-motion: reduce) { .door { transition: none; } .door:hover { transform: none; } }
+@media print {
+  .top, .bottom-nav, #snow, .no-print { display: none !important; }
+  main { padding: 0 !important; }
+  .letter { box-shadow: none; font-size: 20pt; }
+}
+</style>
+
+<canvas id="snow" aria-hidden="true"></canvas>
+<header class="top">
+  <div class="top-in">
+    <a class="brand" href="#oversikt" aria-label="Til oversikten">
+      <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true"><path d="M8 30 C10 16 18 6 30 8 C26 12 26 20 30 30 Z" fill="#d23a4f"/><circle cx="31" cy="8" r="4" fill="#fff"/><rect x="5" y="28" width="28" height="6" rx="3" fill="#fff"/></svg>
+      <span class="brand-name" id="brandName">Rampenisse-verkstedet</span>
+    </a>
+    <nav class="top-nav" id="topNav" aria-label="Hovedmeny"></nav>
+    <div class="top-actions">
+      <span class="sync" id="sync" title="Hvor dataene lagres">Lagret lokalt</span>
+      <a class="icon-btn" href="#oppsett" aria-label="Oppsett og tips" title="Oppsett og tips"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></a>
+    </div>
+  </div>
+</header>
+<main id="app" aria-live="polite"></main>
+<nav class="bottom-nav" id="bottomNav" aria-label="Hovedmeny"></nav>
+<div id="modalRoot"></div>
+<div id="toastRoot"></div>
+
+<script>
+/* ===================== Ikoner ===================== */
+const I = (p) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
+const ICON = {
+  home: I('<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>'),
+  cal: I('<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M8 14h2M14 14h2M8 17h2"/>'),
+  bulb: I('<path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0 0 12 3z"/>'),
+  cart: I('<circle cx="9" cy="20" r="1.5"/><circle cx="17" cy="20" r="1.5"/><path d="M3 4h2l2.4 11h11l2-8H6.2"/>'),
+  book: I('<path d="M4 4h6a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H4z"/><path d="M20 4h-6a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h7z"/>'),
+  mail: I('<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>'),
+  star: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.8l2.8 5.8 6.3.9-4.6 4.4 1.1 6.3L12 17.2l-5.6 3 1.1-6.3L2.9 9.5l6.3-.9z"/></svg>',
+  plus: I('<path d="M12 5v14M5 12h14"/>'),
+  x: I('<path d="M6 6l12 12M18 6L6 18"/>'),
+  dice: I('<rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8" cy="8" r="1.2" fill="currentColor"/><circle cx="16" cy="16" r="1.2" fill="currentColor"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/><circle cx="16" cy="8" r="1.2" fill="currentColor"/><circle cx="8" cy="16" r="1.2" fill="currentColor"/>'),
+  wand: I('<path d="M15 4V2M15 10V8M11 6h2M17 6h2"/><path d="M3 21l11-11 2 2L5 23z" transform="translate(0 -2)"/>'),
+  copy: I('<rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/>'),
+  print: I('<path d="M6 9V3h12v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M6 14h12v7H6z"/>'),
+  moon: I('<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>'),
+  camera: I('<path d="M4 7h3l2-3h6l2 3h3v13H4z"/><circle cx="12" cy="13" r="4"/>'),
+  trash: I('<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>'),
+  hat: '<svg viewBox="0 0 200 160" aria-hidden="true"><path d="M30 130 C40 70 80 20 150 30 C130 50 128 90 150 130 Z" fill="#d23a4f"/><path d="M150 30 C165 30 172 42 170 50" stroke="#d23a4f" stroke-width="14" fill="none" stroke-linecap="round"/><circle cx="168" cy="56" r="16" fill="#fff"/><rect x="18" y="122" width="148" height="30" rx="15" fill="#fff"/></svg>',
+};
+
+/* ===================== Idébank ===================== */
+const CATS = {
+  kjokken: 'Kjøkken & mat', bad: 'Badet', stue: 'Rot i stua', leker: 'Leker & kosedyr',
+  snill: 'Snille overraskelser', ute: 'Ute & vinter', jakt: 'Brev, koder & skattejakt', stunt: 'Store stunt',
+};
+// e = innsats 1-3, m = rot/opprydding 1-3, min = forberedelse i minutter, mat = materialer
+const IDEAS = [
+  {id:'ankomst', c:'snill', t:'Nissen flytter inn', d:'Rampenissen dukker opp med en liten nissedør ved gulvlista, et ankomstbrev og litt «snø» (mel eller glitter) foran døra.', e:2, m:1, min:20, mat:['Nissedør','Ankomstbrev','Litt mel eller glitter'], tags:['start']},
+  {id:'avskjed', c:'snill', t:'Nissen reiser hjem', d:'Nissedøra står på gløtt, nissen har lagt igjen lua, et takkebrev og en liten gave til hvert barn.', e:2, m:1, min:20, mat:['Avskjedsbrev','Liten gave per barn'], tags:['slutt']},
+  {id:'egg-ansikt', c:'kjokken', t:'Eggene har fått ansikter', d:'Tegn morsomme fjes på alle eggene i kjøleskapet. Ett av eggene har nisselue.', e:1, m:1, min:5, mat:['Tusj']},
+  {id:'bla-melk', c:'kjokken', t:'Melka er blå', d:'Noen dråper konditorfarge i melkekartongen. Nissen legger igjen en lapp: «Kua var trist i dag.»', e:1, m:1, min:3, mat:['Konditorfarge']},
+  {id:'frokost-spist', c:'kjokken', t:'Nissen spiste frokosten', d:'Tomme skåler med smuler, en skje i taket av kartongen og en takkelapp fra nissen. Frokosten står gjemt i ovnen.', e:1, m:1, min:5, mat:['Lapp og penn']},
+  {id:'marshmallow-snomann', c:'kjokken', t:'Snømann i kjøleskapet', d:'Bygg en snømann av marshmallows og tannpirkere som står og «kjøler seg» i kjøleskapet.', e:1, m:1, min:10, mat:['Marshmallows','Tannpirkere']},
+  {id:'frossen-lek', c:'kjokken', t:'Lekene er frosset fast', d:'Frys noen små leker i en bolle med vann. Barna må smelte dem løs med varmt vann og skjeer.', e:1, m:2, min:5, mat:['Plastbolle','Små leker'], tags:['kveld-før']},
+  {id:'frokostblanding-ord', c:'kjokken', t:'Beskjed av frokostblanding', d:'Nissen har skrevet «GOD MORGEN» eller barnas navn med frokostblanding på bordet.', e:1, m:2, min:10, mat:['Frokostblanding']},
+  {id:'banan-beskjed', c:'kjokken', t:'Hemmelig beskjed på bananen', d:'Rip inn en beskjed i bananskallet med en tannpirker kvelden før. Teksten blir brun over natta.', e:1, m:1, min:3, mat:['Bananer','Tannpirker'], tags:['kveld-før']},
+  {id:'kosedyr-frokost', c:'kjokken', t:'Frokost for kosedyrene', d:'Kosedyrene sitter rundt frokostbordet med små tallerkener, kakao og servietter. Nissen er servitør.', e:2, m:1, min:15, mat:['Små tallerkener eller dukkeservise']},
+  {id:'pepperkake-plaster', c:'kjokken', t:'Pepperkake-ulykke', d:'En pepperkakemann har brukket beinet. Han har fått plaster, og nissen skriver at han var for rask i akebakken.', e:1, m:1, min:5, mat:['Pepperkaker','Plaster']},
+  {id:'godteri-fiske', c:'kjokken', t:'Nissen fisker etter godteri', d:'Nissen henger fra et overskap med en fiskestang av blyant og hyssing, rett over en skål med godteri.', e:2, m:1, min:10, mat:['Hyssing','Binders','Litt godteri']},
+  {id:'bake-pepperkaker', c:'kjokken', t:'Nissen har bakt', d:'Pepperkakemenn ligger og soler seg på et kjøkkenhåndkle med solbriller av tusj. Nissen ligger ved siden av.', e:2, m:2, min:20, mat:['Pepperkaker','Tusj']},
+  {id:'grot', c:'snill', t:'Grøt til nissen', d:'Barna setter ut en skål grøt kvelden før. Om morgenen er skåla tom, og nissen har skrevet takk med smør på tallerkenen.', e:1, m:1, min:5, mat:['Risgrøt eller havregrøt'], tags:['tradisjon']},
+
+  {id:'dorull-snomann', c:'bad', t:'Snømann av dopapir', d:'Tre doruller blir en snømann med tusj-øyne og et skjerf. Nissen sitter på toppen.', e:1, m:1, min:5, mat:['Doruller','Tusj','Skjerf eller tøybit']},
+  {id:'boblebad', c:'bad', t:'Nissen tar boblebad', d:'Nissen ligger i vasken med «skum» av vatt eller bomullsdotter, med en badeand og en liten håndduk.', e:1, m:1, min:5, mat:['Vatt eller bomullsdotter']},
+  {id:'speilbeskjed', c:'bad', t:'Beskjed på speilet', d:'Skriv «HO HO HO!» eller en hilsen på badespeilet med whiteboardtusj.', e:1, m:1, min:3, mat:['Whiteboardtusj']},
+  {id:'gront-vann', c:'bad', t:'Grønt vann i do', d:'Noen dråper grønn konditorfarge i toalettet. Nissen legger igjen en lapp om at det var «grinch-besøk».', e:1, m:1, min:2, mat:['Konditorfarge']},
+  {id:'tannborste-lue', c:'bad', t:'Tannbørstene har fått luer', d:'Små luer av filt eller servietter på alle tannbørstene. Nissen har også pusset tennene til bamsen.', e:1, m:1, min:10, mat:['Filt eller servietter']},
+  {id:'dorull-gaver', c:'bad', t:'Dorullene er pakket inn', d:'Alle dorullene er pakket inn som julegaver med sløyfer. Lapp: «Til den som må mest!»', e:2, m:1, min:15, mat:['Gavepapir','Teip']},
+
+  {id:'dopapir-tre', c:'stue', t:'Dopapir rundt juletreet', d:'Nissen har viklet dopapir rundt juletreet, stolene og bordbeina. Han ligger fast i en dorull.', e:1, m:3, min:10, mat:['Dopapir']},
+  {id:'postit-dor', c:'stue', t:'Post-it-storm', d:'Barneromsdøra er dekket av post-it-lapper. Kanskje danner de et juletre eller barnets forbokstav.', e:2, m:2, min:20, mat:['Post-it-lapper']},
+  {id:'snoengel-mel', c:'stue', t:'Snøengel i mel', d:'Nissen har laget en snøengel i mel på kjøkkenbenken eller et brett. Klassikeren som alltid treffer.', e:1, m:3, min:5, mat:['Mel','Stort brett']},
+  {id:'sokke-vimpler', c:'stue', t:'Sokkevimpler', d:'Alle sokkene i huset henger som vimpler på en snor tvers over stua.', e:2, m:2, min:15, mat:['Hyssing','Klesklyper']},
+  {id:'bilder-oppned', c:'stue', t:'Alt står opp ned', d:'Bilder, bøker og pynt står opp ned. Nissen henger også opp ned med en lapp om at han «ser verden fra en ny vinkel».', e:1, m:1, min:10, mat:[]},
+  {id:'teipet-dor', c:'stue', t:'Teipet døråpning', d:'Kryss maskeringsteip over døråpningen til barnerommet. Barna må bryte seg ut om morgenen.', e:1, m:1, min:5, mat:['Maskeringsteip']},
+  {id:'ballonger', c:'stue', t:'Ballonghav', d:'Nissen har blåst opp ballonger og fylt et rom eller gangen med dem.', e:2, m:2, min:25, mat:['Ballonger']},
+  {id:'puteslott', c:'stue', t:'Nissen har sovet i puteslott', d:'En hytte av sofaputer og pledd, med nissen sovende inni og kosedyr som vakter.', e:2, m:2, min:10, mat:['Puter og pledd']},
+  {id:'garn-laser', c:'stue', t:'Laserlabyrint av garn', d:'Rødt garn er spent på kryss og tvers i gangen. Barna må klatre gjennom «laserne» for å komme til frokost.', e:2, m:2, min:15, mat:['Rødt garn','Maskeringsteip']},
+  {id:'fotspor', c:'stue', t:'Fotspor i «snø»', d:'Små fotspor i mel eller glitter fra vinduet til nissedøra. Bruk en liten sjablong eller fingertuppene.', e:1, m:2, min:10, mat:['Mel eller glitter']},
+  {id:'undertoy-tre', c:'stue', t:'Juletreet pyntet med undertøy', d:'Nissen har hengt sokker, truser og votter i juletreet i stedet for pynt.', e:1, m:1, min:10, mat:[]},
+  {id:'sko-bord', c:'stue', t:'Skoene spiser frokost', d:'Alle skoene står pent rundt kjøkkenbordet med hver sin tallerken.', e:1, m:1, min:10, mat:[]},
+
+  {id:'lego-fengsel', c:'leker', t:'Kosedyrene satte nissen i fengsel', d:'Nissen sitter bak lego- eller duplogitter, og kosedyrene står vakt. Lapp: «Han spiste opp godteriet.»', e:2, m:1, min:15, mat:['Lego eller duplo']},
+  {id:'zipline', c:'leker', t:'Nissen på zipline', d:'En snor er spent over stua, og nissen henger i en kleshenger midt i turen, gjerne med en bamse som passasjer.', e:2, m:1, min:10, mat:['Hyssing','Kleshenger']},
+  {id:'bilkø', c:'leker', t:'Trafikkork til kjøleskapet', d:'Alle lekebilene står i lang kø fra barnerommet til kjøleskapet. Nissen dirigerer trafikken.', e:2, m:2, min:15, mat:[]},
+  {id:'snoballkrig', c:'leker', t:'Snøballkrig mellom kosedyrene', d:'To lag kosedyr bak hver sin pute-forsvarsmur, med «snøballer» av vatt eller sammenkrøllet papir overalt.', e:2, m:2, min:15, mat:['Vatt eller papir']},
+  {id:'bamse-kidnappet', c:'leker', t:'Bamsen er tatt som gissel', d:'Nissen har «kidnappet» en bamse og legger igjen et løsepengebrev: bamsen kommer tilbake mot en tegning av nissen.', e:1, m:1, min:5, mat:['Løsepengebrev']},
+  {id:'folie-leker', c:'leker', t:'Alt er pakket i sølvpapir', d:'Nissen har pakket inn lekene, fjernkontrollen og noen kopper i aluminiumsfolie.', e:2, m:1, min:20, mat:['Aluminiumsfolie']},
+  {id:'dino-invasjon', c:'leker', t:'Dinosaurene har tatt over', d:'Dinosaurer eller lekedyr marsjerer på rad over kjøkkenbenken. Nissen rir på den største.', e:1, m:1, min:10, mat:[]},
+  {id:'brettspill', c:'leker', t:'Spillkveld med kosedyrene', d:'Nissen og kosedyrene har spilt brettspill hele natta. Brettet står midt i et spill, og nissen jukser tydelig.', e:1, m:1, min:5, mat:['Brettspill']},
+  {id:'dukke-spa', c:'leker', t:'Spa-dag for kosedyrene', d:'Kosedyrene ligger med håndklær på hodet og agurkskiver på øynene. Nissen er massør.', e:2, m:1, min:15, mat:['Små håndklær','Agurk']},
+
+  {id:'nissesokker', c:'snill', t:'Nye nissesokker', d:'Nissen har lagt et par julesokker ved sengen til hvert barn, med en lapp om at føttene skal holde seg varme.', e:1, m:1, min:5, mat:['Julesokker']},
+  {id:'kakao-kveld', c:'snill', t:'Invitasjon til kakaokveld', d:'Nissen inviterer til kakao og julefilm i kveld. Billetter ligger på frokostbordet.', e:1, m:1, min:10, mat:['Kakao','Billetter (papir)']},
+  {id:'tegnekonkurranse', c:'snill', t:'Tegnekonkurranse', d:'Nissen utfordrer barna til å tegne ham. Neste morgen henger tegningene i en «utstilling» med diplom.', e:1, m:1, min:10, mat:['Diplom','Papir og fargestifter']},
+  {id:'god-gjerning', c:'snill', t:'Dagens gode gjerning', d:'Nissen gir barna et oppdrag: gjør noe snilt for noen i dag. Neste dag får de et stjernemerke.', e:1, m:1, min:5, mat:['Oppdragsbrev']},
+  {id:'snokrystaller', c:'snill', t:'Snøkrystaller på rommet', d:'Nissen har klippet papir-snøkrystaller og hengt dem i vinduet på barnerommet.', e:2, m:1, min:25, mat:['Hvitt papir','Saks','Teip']},
+  {id:'bake-invitasjon', c:'snill', t:'Bake sammen med nissen', d:'Nissen har lagt fram pepperkakeformer og en oppskrift med beskjed om at familien skal bake i dag.', e:1, m:2, min:5, mat:['Pepperkakedeig','Former']},
+  {id:'julebok', c:'snill', t:'En julebok til kvelds', d:'Nissen har lagt en julebok (fra biblioteket eller bokhylla) på puta med et bokmerke.', e:1, m:1, min:5, mat:['Julebok']},
+  {id:'ryddet', c:'snill', t:'Nissen ryddet rommet', d:'Nissen har ryddet barnerommet, men litt feil: bamsene i skuffen og sokkene i bokhylla.', e:2, m:1, min:15, mat:[]},
+
+  {id:'fargesno', c:'ute', t:'Farget snø', d:'Nissen har «malt» snøen i hagen med vann og konditorfarge i en sprayflaske. Kanskje et hjerte eller barnas navn.', e:2, m:1, min:15, mat:['Sprayflaske','Konditorfarge'], tags:['krever-sno']},
+  {id:'snomann-lue', c:'ute', t:'Snømann med barnas lue', d:'En liten snømann utenfor vinduet har på seg lua og skjerfet til et av barna.', e:2, m:1, min:20, mat:[], tags:['krever-sno']},
+  {id:'fotspor-sno', c:'ute', t:'Bittesmå fotspor i snøen', d:'Små nissespor i snøen fra vinduet til postkassa, der nissen har lagt et brev.', e:1, m:1, min:10, mat:['Brev'], tags:['krever-sno']},
+  {id:'islykt', c:'ute', t:'Islykt på trappa', d:'Nissen har laget en islykt og satt den på trappa med et telys inni.', e:2, m:1, min:15, mat:['Bøtte','Telys'], tags:['kveld-før']},
+  {id:'bil-postit', c:'ute', t:'Bilen er pyntet', d:'Bilen er dekket av post-it-lapper eller har fått rudolf-gevir og rød nese.', e:2, m:1, min:20, mat:['Post-it-lapper eller reinsdyr-pynt til bil']},
+  {id:'vindu-nisse', c:'stunt', t:'Nissen sitter fast i vinduet', d:'Bare beina til nissen stikker ut mellom gardinene, som om han satt fast på vei ut.', e:1, m:1, min:5, mat:[]},
+
+  {id:'skattejakt', c:'jakt', t:'Skattejakt i huset', d:'5–6 ledetråder gjemt rundt i huset fører til en liten skatt. Tilpass rimene til barnas alder.', e:3, m:1, min:30, mat:['Ledetråder','Liten premie']},
+  {id:'chiffer', c:'jakt', t:'Brev i hemmelig kode', d:'Nissen skriver et brev der hver bokstav er byttet ut med et tall eller symbol. Kodenøkkelen er gjemt et annet sted.', e:2, m:1, min:20, mat:['Brev med kode','Kodenøkkel']},
+  {id:'usynlig-blekk', c:'jakt', t:'Usynlig beskjed', d:'Skriv med hvit voksfarge på hvitt papir. Barna maler over med vannfarge, og beskjeden dukker opp.', e:1, m:1, min:5, mat:['Hvit voksfarge','Vannfarger']},
+  {id:'kart', c:'jakt', t:'Skattekart', d:'Et tegnet kart over huset med kryss der nissen har gjemt noe. Brent kant (med lighter, forsiktig) gir piratfølelse.', e:2, m:1, min:20, mat:['Papir','Liten premie']},
+  {id:'nissedagbok', c:'jakt', t:'Nissens dagbok', d:'Nissen har glemt igjen dagboka si, oppslått på dagens side, der han forteller hva han gjorde i natt.', e:1, m:1, min:10, mat:['Liten notatbok']},
+  {id:'vindu-dugg', c:'jakt', t:'Beskjed i duggen', d:'Skriv en hilsen med fingeren på baderomsspeilet. Den dukker opp når noen dusjer.', e:1, m:1, min:2, mat:[]},
+  {id:'nisseregler', c:'jakt', t:'Nisseregler', d:'Nissen henger opp «nisseregler» på kjøleskapet: ikke ta på nissen, si god morgen til ham, ingen nisser etter leggetid.', e:1, m:1, min:10, mat:['Regelark']},
+
+  {id:'lampe', c:'stunt', t:'Nissen henger i taklampa', d:'Nissen henger i taklampa med en snor, som om han har hoppet strikk fra skapet.', e:1, m:1, min:5, mat:['Hyssing']},
+  {id:'venner', c:'stunt', t:'Nissen har hatt besøk', d:'Nissen har hatt vennefest: små kopper, papirrester, flere nisser eller kosedyr som sover i haugen.', e:2, m:2, min:15, mat:['Små kopper','Konfetti']},
+  {id:'gjemsel', c:'stunt', t:'Nissen leker gjemsel', d:'Nissen har gjemt seg og legger igjen en lapp: «Finn meg før frokost!» Gi varmt/kaldt-hint ved behov.', e:1, m:1, min:3, mat:['Lapp']},
+  {id:'ski', c:'stunt', t:'Skitur på bordet', d:'Nissen går på ski med ispinner over bordet i ei løype av sukker eller mel, med staver av tannpirkere.', e:2, m:2, min:15, mat:['Ispinner','Tannpirkere','Sukker eller mel']},
+  {id:'syden', c:'stunt', t:'Nissen på sydentur', d:'Nissen ligger i en skål med vann, solbriller og et papirparasoll ved siden av et glass «juice».', e:2, m:1, min:10, mat:['Cocktailparasoll','Solbriller (papir)']},
+  {id:'koffert', c:'stunt', t:'Nissen pakker for ferie', d:'Nissen har pakket en liten koffert eller pose med barnas sokker og godteri, og står klar ved døra.', e:1, m:1, min:5, mat:[]},
+  {id:'bart', c:'stunt', t:'Bart på familiebildene', d:'Nissen har tegnet bart med whiteboardtusj på glasset foran familiebildene.', e:1, m:1, min:5, mat:['Whiteboardtusj']},
+  {id:'kaffe', c:'stunt', t:'Nissen stjal kaffen', d:'Kaffeboksen er borte, og nissen har lagt igjen en løsepengelapp til voksne. Lekent for alle.', e:1, m:1, min:3, mat:['Lapp']},
+  {id:'fallskjerm', c:'stunt', t:'Fallskjermhopp fra trappa', d:'Nissen har hoppet i fallskjerm laget av en serviett og hyssing, og henger fast i rekkverket.', e:1, m:1, min:10, mat:['Serviett','Hyssing']},
+  {id:'snoballer-frys', c:'stunt', t:'Snøballer i fryseren', d:'Nissen har laget snøballer og lagret dem i fryseren «til senere», med en lapp som sier at han planlegger angrep.', e:1, m:1, min:5, mat:[], tags:['krever-sno']},
+];
+
+const IDEA_BY_ID = Object.fromEntries(IDEAS.map(i => [i.id, i]));
+
+/* ===================== Brevmaler ===================== */
+const LETTERS = {
+  ankomst: { name: 'Ankomstbrev', text: (v) => `Hei, ${v.kids}!
+
+Jeg heter ${v.nisse}, og jeg er en ekte rampenisse. Nissen på Nordpolen har sendt meg for å holde et øye med dere fram til julaften.
+
+Jeg flytter inn i natt. Dere vil ikke se meg når jeg er våken, men dere vil se hva jeg har gjort.
+
+Noen regler:
+• Ikke ta på meg, da mister jeg nissekreftene.
+• Si god morgen til meg hver dag.
+• Vær snille med hverandre, så blir jeg kanskje litt mindre rampete.
+
+Vi ses i morgen tidlig!` },
+  advarsel: { name: 'Advarsel', text: (v) => `Kjære ${v.kids}!
+
+Nå har jeg fått høre at det har vært litt krangling her i huset. Det liker jeg ikke.
+
+Hvis dere er ekstra snille med hverandre i dag, lover jeg å være litt mindre rampete i natt. Kanskje.
+
+Jeg følger med!` },
+  unnskyldning: { name: 'Unnskyldning', text: (v) => `Hei, ${v.kids}.
+
+Jeg må si unnskyld. I natt ble jeg litt for rampete, og jeg skjønner at det ble rot.
+
+Jeg lover å hjelpe til med å rydde (når ingen ser meg). Kan dere tilgi meg?
+
+Klem fra en litt flau nisse` },
+  takk: { name: 'Takk for grøten', text: (v) => `Tusen takk for grøten, ${v.kids}!
+
+Den var den beste jeg har smakt i år. Jeg spiste hver eneste risbit og slikket skåla etterpå.
+
+Som takk har jeg vært ekstra snill i natt. Se om dere finner noe!` },
+  oppdrag: { name: 'Oppdrag', text: (v) => `Hemmelig oppdrag til ${v.kids}!
+
+I dag skal dere gjøre én god gjerning for noen i familien uten at de vet at det er dere.
+
+Når oppdraget er utført, legger dere en tegning ved nissedøra. Da vet jeg at dere har klart det.
+
+Lykke til, agenter!` },
+  avskjed: { name: 'Avskjedsbrev', text: (v) => `Kjære ${v.kids}!
+
+Nå er det julaften, og jeg må reise hjem til Nordpolen. Det har vært en fantastisk desember hos dere.
+
+Takk for at dere sa god morgen til meg, for grøten og for at dere tålte alle rampestrekene mine.
+
+Jeg skal fortelle julenissen at dere har vært noen skikkelig fine barn. Kanskje kommer jeg tilbake neste år?
+
+God jul!` },
+};
+
+/* ===================== Tips ===================== */
+const TIPS = [
+  ['Gjør rampestreken etter at barna sover', 'Sett en påminnelse på telefonen klokka 21. Mange ganger er det den største utfordringen å huske det.'],
+  ['Ha 3–4 reservestreker klare', 'Noen raske streker uten materialer (gjemsel, alt opp ned, nissen i lampa) redder kvelder der du er sliten.'],
+  ['Små streker på hverdager, store i helgene', 'Morgenene er travle. Spar rotete og tidkrevende stunt til lørdag og søndag.'],
+  ['Unngå rot med mat som må kastes', 'Mel og sukker kan brukes i baking etterpå hvis de ligger på et rent brett. Det sparer både penger og krangel.'],
+  ['Ta bilde før barna våkner', 'Da har du et fint minne og et bilde til dagboka selv om stunten blir ødelagt etter fem minutter.'],
+  ['Tilpass rampetheten til barna', 'Engstelige barn liker søte og morsomme streker bedre enn rot og «hærverk». Følg med på reaksjonene i loggen.'],
+  ['Ha en plan B for glemte kvelder', 'Nissen kan legge igjen en lapp: «Jeg var på møte hos julenissen i natt.» Da er det greit å hoppe over en dag.'],
+  ['Avslutt med en snill finale', 'De siste dagene før jul fungerer best med snille overraskelser og et avskjedsbrev på lille julaften eller julaften.'],
+];
+
+/* ===================== Tilstand og lagring ===================== */
+const LS_KEY = 'rampenisse-v1';
+const LS_PREF = 'rampenisse-prefs';
+function defaultYear() { const n = new Date(); return (n.getMonth() === 11 && n.getDate() > 25) ? n.getFullYear() + 1 : n.getFullYear(); }
+function defaultSettings() { const y = defaultYear(); return { nisseName: 'Rampenissen', kids: [], startDate: `${y}-12-01`, endDate: `${y}-12-24`, reminderTime: '21:30', notes: '' }; }
+function defaultExtra() { return { customIdeas: [], favorites: [], shopCustom: [], shopChecked: {}, prepChecked: {} }; }
+
+const S = { settings: defaultSettings(), extra: defaultExtra(), days: {} };
+let mode = 'local'; let DB = null; let ASSETS = null; let DOWNLOADS = null;
+let prefs = { snow: true };
+
+function lsGet(k) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; } catch (e) { return null; } }
+function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* full or blocked */ } }
+function loadLocal() {
+  const d = lsGet(LS_KEY);
+  if (d) { S.settings = { ...defaultSettings(), ...(d.settings || {}) }; S.extra = { ...defaultExtra(), ...(d.extra || {}) }; S.days = d.days || {}; }
+  prefs = { ...prefs, ...(lsGet(LS_PREF) || {}) };
+}
+function mirrorLocal() { lsSet(LS_KEY, { settings: S.settings, extra: S.extra, days: S.days }); }
+
+// Én skriving om gangen per dokument, siste verdi vinner
+const pending = new Map(); const inflight = new Set();
+function writeDoc(path, data) {
+  mirrorLocal();
+  if (mode !== 'db') return;
+  pending.set(path, data); flush(path);
+}
+async function flush(path) {
+  if (inflight.has(path)) return;
+  while (pending.has(path)) {
+    const op = pending.get(path); pending.delete(path); inflight.add(path);
+    try { if (op === null) await DB.doc(path).delete(); else await DB.doc(path).set(JSON.parse(JSON.stringify(op))); setSync('cloud'); }
+    catch (e) { setSync('error', e); }
+    inflight.delete(path);
+  }
+}
+const saveSettings = () => writeDoc('app/settings', S.settings);
+const saveExtra = () => writeDoc('app/extra', S.extra);
+const dayKey = (n) => 'd' + String(n).padStart(2, '0');
+function saveDay(n) { const k = dayKey(n); const d = S.days[k]; writeDoc('days/' + k, d && Object.keys(d).length ? d : null); }
+
+function setSync(state, err) {
+  const el = document.getElementById('sync');
+  if (state === 'cloud') { el.textContent = 'Lagret i skyen'; el.title = 'Planen lagres i skyen og er lik på alle enhetene dine.'; }
+  else if (state === 'loading') { el.textContent = 'Kobler til…'; }
+  else if (state === 'error') { el.textContent = 'Lagret lokalt'; el.title = 'Fikk ikke lagret i skyen. Endringene ligger på denne enheten.'; if (err) console.warn(err); }
+  else { el.textContent = 'Lagret lokalt'; el.title = 'Planen lagres i nettleseren på denne enheten. Ta sikkerhetskopi under Oppsett.'; }
+}
+
+async function connectCloud() {
+  if (!window.claude || typeof window.claude.use !== 'function') return;
+  setSync('loading');
+  let db = null;
+  try { db = await window.claude.use('db'); } catch (e) { db = null; }
+  try { ASSETS = await window.claude.use('assets'); } catch (e) { ASSETS = null; }
+  try { DOWNLOADS = await window.claude.use('downloads'); } catch (e) { DOWNLOADS = null; }
+  if (!db) { setSync('local'); return; }
+  DB = db;
+  const localSnapshot = { settings: { ...S.settings }, extra: { ...S.extra }, days: { ...S.days } };
+  let gotApp = false, gotDays = false, migrated = false;
+  const timer = setTimeout(() => { if (!gotApp || !gotDays) { setSync('error'); toast('Får ikke kontakt med skylagringen. Du kan jobbe videre, det lagres lokalt.'); } }, 10000);
+  const maybeMigrate = (appEmpty, daysEmpty) => {
+    if (migrated || !gotApp || !gotDays) return; migrated = true; clearTimeout(timer);
+    mode = 'db'; setSync('cloud');
+    const hasLocal = Object.keys(localSnapshot.days).length || localSnapshot.settings.kids.length || localSnapshot.extra.customIdeas.length;
+    if (appEmpty && daysEmpty && hasLocal) {
+      S.settings = localSnapshot.settings; S.extra = localSnapshot.extra; S.days = localSnapshot.days;
+      saveSettings(); saveExtra(); Object.keys(S.days).forEach(k => saveDay(+k.slice(1)));
+      toast('Planen din er flyttet til skyen.');
+    }
+    render();
+  };
+  let appEmpty = true, daysEmpty = true;
+  DB.collection('app').onSnapshot((snap) => {
+    snap.docs.forEach(d => {
+      if (d.id === 'settings') S.settings = { ...defaultSettings(), ...JSON.parse(JSON.stringify(d.data())) };
+      if (d.id === 'extra') S.extra = { ...defaultExtra(), ...JSON.parse(JSON.stringify(d.data())) };
+    });
+    if (!snap.metadata.fromCache) { if (!gotApp) appEmpty = snap.empty; gotApp = true; }
+    if (migrated) { mirrorLocal(); renderSoft(); } else maybeMigrate(appEmpty, daysEmpty);
+  }, (e) => { clearTimeout(timer); setSync('error', e); });
+  DB.collection('days').onSnapshot((snap) => {
+    if (migrated || !snap.empty) { const next = {}; snap.docs.forEach(d => { next[d.id] = JSON.parse(JSON.stringify(d.data())); }); if (migrated || !snap.metadata.fromCache) S.days = next; }
+    if (!snap.metadata.fromCache) { if (!gotDays) daysEmpty = snap.empty; gotDays = true; }
+    if (migrated) { mirrorLocal(); renderSoft(); } else maybeMigrate(appEmpty, daysEmpty);
+  }, (e) => { clearTimeout(timer); setSync('error', e); });
+}
+
+/* ===================== Hjelpere ===================== */
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const $ = (sel, root = document) => root.querySelector(sel);
+const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
+const WD = ['søn', 'man', 'tir', 'ons', 'tor', 'fre', 'lør'];
+const WD_LONG = ['søndag', 'mandag', 'tirsdag', 'onsdag', 'torsdag', 'fredag', 'lørdag'];
+const MONTHS = ['januar', 'februar', 'mars', 'april', 'mai', 'juni', 'juli', 'august', 'september', 'oktober', 'november', 'desember'];
+function parseDate(s) { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); }
+function today0() { const n = new Date(); return new Date(n.getFullYear(), n.getMonth(), n.getDate()); }
+function totalDays() { const a = parseDate(S.settings.startDate), b = parseDate(S.settings.endDate); const n = Math.round((b - a) / 864e5) + 1; return Math.max(1, Math.min(40, n || 24)); }
+function dateOf(n) { const d = parseDate(S.settings.startDate); d.setDate(d.getDate() + n - 1); return d; }
+function dayNumberToday() { return Math.round((today0() - parseDate(S.settings.startDate)) / 864e5) + 1; }
+function fmtDate(d) { return `${WD_LONG[d.getDay()]} ${d.getDate()}. ${MONTHS[d.getMonth()]}`; }
+function isWeekend(d) { return d.getDay() === 0 || d.getDay() === 6; }
+function kidsText() { const k = S.settings.kids.filter(Boolean); if (!k.length) return 'kjære barn'; if (k.length === 1) return k[0]; return k.slice(0, -1).join(', ') + ' og ' + k[k.length - 1]; }
+function getDay(n) { return S.days[dayKey(n)] || {}; }
+function dayStatus(d) { if (d.status) return d.status; return d.title ? 'planlagt' : 'tom'; }
+const STATUS = { tom: 'Ikke planlagt', planlagt: 'Planlagt', klar: 'Klar', utfort: 'Utført', hoppet: 'Hoppet over' };
+function allIdeas() { return [...IDEAS, ...(S.extra.customIdeas || []).map(i => ({ ...i, custom: true }))]; }
+function ideaById(id) { return IDEA_BY_ID[id] || (S.extra.customIdeas || []).find(i => i.id === id); }
+function dots(n, cls) { return `<span class="dots ${cls}" aria-label="${n} av 3">${[1, 2, 3].map(i => `<i class="${i <= n ? 'on' : ''}"></i>`).join('')}</span>`; }
+function photoSrc(p) { return p.data || p.url || (p.id ? '/_blob/' + p.id : ''); }
+function toast(msg) { const r = $('#toastRoot'); r.innerHTML = `<div class="toast" role="status">${esc(msg)}</div>`; clearTimeout(toast.t); toast.t = setTimeout(() => r.innerHTML = '', 2800); }
+async function copyText(text, el) {
+  try { await navigator.clipboard.writeText(text); toast('Kopiert'); }
+  catch (e) { if (el) { el.focus(); el.select && el.select(); } toast('Marker teksten og kopier manuelt'); }
+}
+function inTopFrame() { try { return window.self === window.top; } catch (e) { return false; } }
+
+/* ===================== Ruting ===================== */
+const ROUTES = [
+  { id: 'oversikt', label: 'Oversikt', short: 'Hjem', icon: 'home' },
+  { id: 'kalender', label: 'Kalender', short: 'Kalender', icon: 'cal' },
+  { id: 'ideer', label: 'Idébank', short: 'Ideer', icon: 'bulb' },
+  { id: 'handleliste', label: 'Handleliste', short: 'Handle', icon: 'cart' },
+  { id: 'dagbok', label: 'Dagbok', short: 'Dagbok', icon: 'book' },
+  { id: 'brev', label: 'Nissebrev', short: 'Brev', icon: 'mail' },
+];
+function route() { const h = location.hash.replace('#', ''); return [...ROUTES.map(r => r.id), 'oppsett'].includes(h) ? h : 'oversikt'; }
+function renderNav() {
+  const cur = route();
+  $('#topNav').innerHTML = ROUTES.map(r => `<a href="#${r.id}" ${r.id === cur ? 'aria-current="page"' : ''}>${r.label}</a>`).join('');
+  $('#bottomNav').innerHTML = ROUTES.map(r => `<a href="#${r.id}" ${r.id === cur ? 'aria-current="page"' : ''}>${ICON[r.icon]}<span>${r.short}</span></a>`).join('');
+  $('#brandName').textContent = S.settings.nisseName && S.settings.nisseName !== 'Rampenissen' ? S.settings.nisseName + 's verksted' : 'Rampenisse-verkstedet';
+}
+const VIEWS = {};
+let lastRoute = null;
+function render() {
+  renderNav();
+  const r = route();
+  const app = $('#app');
+  app.innerHTML = VIEWS[r]();
+  if (VIEWS[r].after) VIEWS[r].after();
+  if (lastRoute !== r) { window.scrollTo(0, 0); lastRoute = r; }
+}
+// Ved synk fra skyen: ikke tegn på nytt mens brukeren skriver i et felt i hovedvisningen
+function renderSoft() {
+  const a = document.activeElement;
+  if (a && $('#app').contains(a) && /INPUT|TEXTAREA|SELECT/.test(a.tagName)) { renderNav(); return; }
+  const y = window.scrollY; render(); window.scrollTo(0, y);
+}
+window.addEventListener('hashchange', () => { closeModal(); render(); });
+
+/* ===================== Oversikt ===================== */
+function counts() {
+  const N = totalDays(); const c = { tom: 0, planlagt: 0, klar: 0, utfort: 0, hoppet: 0 };
+  for (let i = 1; i <= N; i++) c[dayStatus(getDay(i))]++;
+  return c;
+}
+function miniDay(n) {
+  const d = getDay(n), st = dayStatus(d), dt = dateOf(n);
+  const chipCls = { tom: 'plain', planlagt: '', klar: 'gold', utfort: 'berry', hoppet: 'plain' }[st];
+  return `<button class="mini-day" data-open="${n}"><span class="mini-num">${n}</span><span style="min-width:0"><span class="mt" style="display:block">${esc(d.title || 'Ikke planlagt ennå')}</span><span class="small muted">${fmtDate(dt)}</span></span><span class="chip ${chipCls}">${STATUS[st]}</span></button>`;
+}
+VIEWS.oversikt = () => {
+  const N = totalDays(), dn = dayNumberToday(), c = counts();
+  const name = esc(S.settings.nisseName || 'Rampenissen');
+  let hero;
+  if (dn < 1) {
+    const left = 1 - dn;
+    hero = `<div class="eyebrow">Nedtelling</div>
+      <div class="hero-big">${left} ${left === 1 ? 'dag' : 'dager'} til ${name} flytter inn</div>
+      <p class="hero-sub">Nissen kommer ${fmtDate(dateOf(1))}. ${c.tom ? `Du har ${c.tom} av ${N} dager igjen å planlegge.` : 'Alle dagene er planlagt. Godt jobbet!'}</p>
+      <div class="row"><a class="btn primary" href="#kalender">${ICON.cal} Planlegg kalenderen</a>${c.tom ? `<button class="btn" data-act="autofill">${ICON.wand} Lag forslag til tomme dager</button>` : ''}</div>`;
+  } else if (dn <= N) {
+    const pct = Math.round(((c.utfort + c.hoppet) / N) * 100);
+    hero = `<div class="eyebrow">Dag ${dn} av ${N} · ${fmtDate(today0())}</div>
+      <div class="hero-big">${name} er på plass</div>
+      <p class="hero-sub">${c.utfort} rampestreker utført så langt. ${N - dn} ${N - dn === 1 ? 'dag' : 'dager'} igjen til nissen reiser hjem.</p>
+      <div class="progress" aria-label="${pct} prosent ferdig"><span style="width:${pct}%"></span></div>`;
+  } else {
+    hero = `<div class="eyebrow">Sesongen er over</div>
+      <div class="hero-big">${name} har reist hjem</div>
+      <p class="hero-sub">${c.utfort} rampestreker på ${N} dager. Bla i dagboka for å mimre.</p>
+      <div class="row"><a class="btn primary" href="#dagbok">${ICON.book} Åpne dagboka</a></div>`;
+  }
+
+  // Dagens og kveldens oppgaver
+  let focus = '';
+  if (dn >= 1 && dn <= N) {
+    const d = getDay(dn), st = dayStatus(d);
+    focus += `<div class="card today-card">
+      <div class="label">I dag morges · luke ${dn}</div>
+      <div class="t-title">${esc(d.title || 'Ingen rampestrek planlagt')}</div>
+      ${d.description ? `<p class="muted">${esc(d.description)}</p>` : ''}
+      <div class="row">${st === 'utfort' ? `<span class="chip berry">Utført</span>` : ''}
+        <button class="btn green" data-open="${dn}" data-tab="logg">${ICON.book} ${st === 'utfort' ? 'Se loggen' : 'Logg hvordan det gikk'}</button></div>
+    </div>`;
+  }
+  const tonight = dn < 1 ? 1 : dn + 1;
+  if (tonight <= N) {
+    const d = getDay(tonight), st = dayStatus(d);
+    const mats = d.materials || [];
+    focus += `<div class="card today-card">
+      <div class="label">${dn < 1 ? 'Første kveld' : 'I kveld etter leggetid'} · luke ${tonight}</div>
+      <div class="t-title">${esc(d.title || 'Ikke planlagt ennå')}</div>
+      ${d.description ? `<p class="muted">${esc(d.description)}</p>` : ''}
+      ${d.prep ? `<div class="callout"><span class="label">Forberedelser</span><span>${esc(d.prep)}</span></div>` : ''}
+      ${mats.length ? `<div class="row">${mats.map(m => `<span class="chip">${esc(m)}</span>`).join('')}</div>` : ''}
+      <div class="row">${d.title ? (st === 'klar' ? `<span class="chip gold">Klar</span>` : `<button class="btn" data-mark="${tonight}" data-status="klar">Merk som klar</button>`) : ''}
+        <button class="btn ${d.title ? '' : 'primary'}" data-open="${tonight}">${d.title ? 'Åpne' : 'Velg rampestrek'}</button></div>
+    </div>`;
+  }
+
+  const upcomingStart = Math.max(1, dn < 1 ? 1 : dn + 2);
+  const upcoming = []; for (let i = upcomingStart; i <= Math.min(N, upcomingStart + 4); i++) upcoming.push(miniDay(i));
+
+  // Forberedelser før start
+  const prepItems = [
+    { k: 'navn', t: 'Gi nissen et navn og legg inn barna', auto: S.settings.nisseName !== 'Rampenissen' && S.settings.kids.length > 0, link: '#oppsett' },
+    { k: 'uke1', t: 'Planlegg den første uka', auto: [1, 2, 3, 4, 5, 6, 7].every(i => i > N || getDay(i).title), link: '#kalender' },
+    { k: 'alle', t: `Planlegg alle ${N} dagene`, auto: c.tom === 0, link: '#kalender' },
+    { k: 'handle', t: 'Handle inn det du trenger', auto: false, link: '#handleliste' },
+    { k: 'dor', t: 'Skaff eller lag nissedør', auto: false },
+    { k: 'figur', t: 'Skaff selve nissefiguren', auto: false },
+    { k: 'brev', t: 'Skriv ankomstbrevet', auto: false, link: '#brev' },
+    { k: 'alarm', t: `Sett daglig påminnelse kl. ${esc(S.settings.reminderTime || '21:30')} på telefonen`, auto: false },
+  ];
+  const prepCard = dn <= 3 ? `<div class="card stack">
+      <div class="row" style="justify-content:space-between"><h3>Før nissen kommer</h3><span class="chip">${prepItems.filter(p => p.auto || S.extra.prepChecked[p.k]).length} av ${prepItems.length}</span></div>
+      <div class="list">${prepItems.map(p => { const done = p.auto || S.extra.prepChecked[p.k]; return `<label class="check ${done ? 'done' : ''}"><input type="checkbox" data-prep="${p.k}" ${done ? 'checked' : ''} ${p.auto ? 'disabled' : ''}><span>${p.t}${p.link && !done ? ` · <a href="${p.link}">gå dit</a>` : ''}</span></label>`; }).join('')}</div>
+    </div>` : '';
+
+  const rated = Object.values(S.days).filter(d => d.rating);
+  const avg = rated.length ? (rated.reduce((a, d) => a + d.rating, 0) / rated.length).toFixed(1).replace('.', ',') : '–';
+
+  return `<section class="view">
+    <div class="hero">${hero}<div class="hero-hat">${ICON.hat}</div></div>
+    <div class="stats">
+      <div class="stat"><b>${N - c.tom}</b><span>av ${N} planlagt</span></div>
+      <div class="stat"><b>${c.klar}</b><span>klar til bruk</span></div>
+      <div class="stat"><b>${c.utfort}</b><span>utført</span></div>
+      <div class="stat"><b>${avg}</b><span>snitt-stjerner</span></div>
+    </div>
+    <div class="grid-2 wide-left">
+      <div class="stack">${focus}${prepCard}</div>
+      <div class="stack">
+        <div class="card stack"><div class="row" style="justify-content:space-between"><h3>Kommende dager</h3><a href="#kalender" class="small">Hele kalenderen</a></div>
+          <div class="list">${upcoming.join('') || '<p class="muted">Ingen flere dager.</p>'}</div></div>
+        <div class="card stack"><h3>Trenger du en idé?</h3>${ideaTeaser()}</div>
+      </div>
+    </div>
+  </section>`;
+};
+function ideaTeaser() {
+  const used = new Set(Object.values(S.days).map(d => d.ideaId));
+  const pool = allIdeas().filter(i => !used.has(i.id) && !(i.tags || []).includes('start') && !(i.tags || []).includes('slutt'));
+  const i = pool[Math.floor(Math.random() * pool.length)] || IDEAS[2];
+  return `<div class="stack"><b>${esc(i.t)}</b><p class="muted small">${esc(i.d)}</p>
+    <div class="row"><button class="btn sm" data-assign="${i.id}">${ICON.plus} Legg i kalenderen</button><button class="btn sm ghost" data-act="reteaser">${ICON.dice} En annen</button></div></div>`;
+}
+
+/* ===================== Kalender ===================== */
+VIEWS.kalender = () => {
+  const N = totalDays(), dn = dayNumberToday(), c = counts();
+  let doors = '';
+  for (let i = 1; i <= N; i++) {
+    const d = getDay(i), st = dayStatus(d), dt = dateOf(i), ph = (d.photos || [])[0];
+    doors += `<button class="door s-${st} ${isWeekend(dt) ? 'weekend' : ''} ${i === dn ? 'is-today' : ''}" data-open="${i}" aria-label="Luke ${i}, ${fmtDate(dt)}: ${esc(d.title || STATUS[st])}">
+      ${ph && st === 'utfort' ? `<span class="ph" style="background-image:url('${esc(photoSrc(ph))}')"></span>` : ''}
+      <span class="top-row"><span><span class="num">${i}</span><br><span class="wd">${WD[dt.getDay()]} ${dt.getDate()}.</span></span>${st !== 'tom' ? `<span class="badge">${STATUS[st]}</span>` : ''}</span>
+      <span class="dt">${esc(d.title || '')}</span>
+    </button>`;
+  }
+  return `<section class="view">
+    <div class="view-head"><div class="stack" style="gap:4px"><h2>Nissekalenderen</h2><p>Trykk på en luke for å planlegge, forberede og logge dagen. Helgedager er merket i gull.</p></div>
+      <div class="row">${c.tom ? `<button class="btn primary" data-act="autofill">${ICON.wand} Fyll ${c.tom} tomme dager</button>` : ''}</div></div>
+    <div class="legend"><span><i style="background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--line)"></i>Ikke planlagt (${c.tom})</span><span><i style="background:var(--door)"></i>Planlagt (${c.planlagt})</span><span><i style="background:#8a5d0d"></i>Klar (${c.klar})</span><span><i style="background:var(--berry)"></i>Utført (${c.utfort})</span>${c.hoppet ? `<span><i style="background:#6b7a76"></i>Hoppet over (${c.hoppet})</span>` : ''}</div>
+    <div class="calendar">${doors}</div>
+  </section>`;
+};
+
+function autofill() {
+  const N = totalDays();
+  const used = new Set(Object.values(S.days).map(d => d.ideaId).filter(Boolean));
+  const pool = allIdeas().filter(i => !used.has(i.id) && !(i.tags || []).some(t => ['start', 'slutt'].includes(t)));
+  const shuffle = (a) => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  shuffle(pool);
+  const take = (pred) => { const idx = pool.findIndex(pred); if (idx < 0) return pool.shift(); return pool.splice(idx, 1)[0]; };
+  let filled = 0;
+  for (let n = 1; n <= N; n++) {
+    if (getDay(n).title) continue;
+    let idea;
+    if (n === 1 && !used.has('ankomst')) idea = IDEA_BY_ID.ankomst;
+    else if (n === N && !used.has('avskjed')) idea = IDEA_BY_ID.avskjed;
+    else {
+      const dt = dateOf(n), we = isWeekend(dt), late = n >= N - 2;
+      if (late) idea = take(i => i.c === 'snill');
+      else if (we) idea = take(i => i.e >= 2 || i.m >= 2);
+      else if (n % 5 === 0) idea = take(i => i.c === 'snill' || i.c === 'jakt');
+      else idea = take(i => i.e === 1 && i.m <= 2);
+    }
+    if (!idea) break;
+    applyIdea(n, idea, false); filled++;
+  }
+  toast(filled ? `${filled} dager fikk et forslag. Bytt ut det du ikke liker.` : 'Ingen tomme dager å fylle.');
+  render();
+}
+function applyIdea(n, idea, rerender = true) {
+  const k = dayKey(n); const old = S.days[k] || {};
+  S.days[k] = { ...old, ideaId: idea.id, title: idea.t, description: idea.d, materials: [...(idea.mat || [])], status: old.status && old.status !== 'tom' ? old.status : 'planlagt' };
+  saveDay(n);
+  if (rerender) render();
+}
+
+/* ===================== Dag-modal ===================== */
+let modalState = null;
+function openDay(n, tab) {
+  const d = JSON.parse(JSON.stringify(getDay(n)));
+  modalState = { n, tab: tab || (dayStatus(d) === 'utfort' || (n <= dayNumberToday() && d.title) ? 'logg' : 'plan'), d, pickQuery: '', picking: !d.title };
+  drawModal();
+}
+function closeModal() { modalState = null; $('#modalRoot').innerHTML = ''; document.body.style.overflow = ''; }
+function drawModal() {
+  const m = modalState; if (!m) return;
+  const { n, d } = m; const dt = dateOf(n);
+  document.body.style.overflow = 'hidden';
+  const tabs = [['plan', 'Plan'], ['logg', 'Logg & minner']];
+  let body = '';
+  if (m.tab === 'plan') {
+    const st = dayStatus(d);
+    body = `
+      ${m.picking ? pickerHtml() : `<div class="callout green"><div class="row" style="justify-content:space-between"><span class="label">Valgt rampestrek</span><button class="btn sm" data-m="pick">Bytt idé</button></div></div>`}
+      <div class="form-grid">
+        <label class="field full"><span>Tittel</span><input class="input" id="f-title" value="${esc(d.title || '')}" placeholder="F.eks. Snøengel i mel"></label>
+        <label class="field full"><span>Hva skjer</span><textarea class="input" id="f-desc" placeholder="Beskriv oppsettet">${esc(d.description || '')}</textarea></label>
+        <label class="field full"><span>Materialer (skill med komma)</span><input class="input" id="f-mat" value="${esc((d.materials || []).join(', '))}" placeholder="Mel, brett"></label>
+        <label class="field full"><span>Forberedelser kvelden før</span><textarea class="input" id="f-prep" placeholder="F.eks. Legg brettet klart i skapet, ta frem nissen">${esc(d.prep || '')}</textarea></label>
+        <div class="field full"><span>Status</span><div class="seg">${['planlagt', 'klar', 'utfort', 'hoppet'].map(s => `<button class="chip chip-toggle" data-status-set="${s}" aria-pressed="${st === s}">${STATUS[s]}</button>`).join('')}</div></div>
+      </div>`;
+  } else {
+    const reactions = ['Lo høyt', 'Ble overrasket', 'Ble litt sur', 'Trodde ikke på det', 'Ville skrive til nissen', 'Ryddet med glede', 'Ble litt redd', 'Fant det ikke'];
+    body = `
+      <div class="field"><span>Hvor godt traff det?</span><div class="stars" role="radiogroup" aria-label="Stjerner">${[1, 2, 3, 4, 5].map(i => `<button class="${(d.rating || 0) >= i ? 'on' : ''}" data-rate="${i}" aria-label="${i} stjerner">${ICON.star}</button>`).join('')}</div></div>
+      <div class="field"><span>Reaksjoner</span><div class="seg">${reactions.map(r => `<button class="chip chip-toggle" data-react="${esc(r)}" aria-pressed="${(d.reactions || []).includes(r)}">${esc(r)}</button>`).join('')}</div></div>
+      <label class="field"><span>Hva skjedde?</span><textarea class="input" id="f-log" placeholder="Hvem fant den først, hva sa de?">${esc(d.log || '')}</textarea></label>
+      <label class="field"><span>Gullkorn (sitat fra barna)</span><input class="input" id="f-quote" value="${esc(d.quote || '')}" placeholder="«Nissen må ha vært sulten!»"></label>
+      <label class="field"><span>Notat til meg selv</span><input class="input" id="f-note" value="${esc(d.note || '')}" placeholder="F.eks. for mye rot på en hverdag"></label>
+      <div class="field"><span>Bilder</span><div class="photos">${(d.photos || []).map((p, i) => `<div class="photo"><img src="${esc(photoSrc(p))}" alt="Bilde fra dag ${n}"><button data-delphoto="${i}" aria-label="Fjern bildet">${ICON.x}</button></div>`).join('')}
+        <label class="upload">${ICON.camera}<span>Legg til bilde</span><input type="file" accept="image/*" id="f-photo" multiple></label></div></div>`;
+  }
+  $('#modalRoot').innerHTML = `<div class="modal-wrap" data-m="backdrop"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <div class="modal-head"><span class="mini-num">${n}</span><div><h2 id="mTitle">${esc(fmtDate(dt))}</h2><div class="small muted">Luke ${n} av ${totalDays()}${isWeekend(dt) ? ' · helg' : ''}</div></div><button class="icon-btn modal-close" data-m="close" aria-label="Lukk">${ICON.x}</button></div>
+    <div class="tabs" role="tablist">${tabs.map(([k, l]) => `<button role="tab" aria-selected="${m.tab === k}" data-mtab="${k}">${l}</button>`).join('')}</div>
+    ${body}
+    <div class="sticky-actions"><button class="btn ghost danger" data-m="clear">${ICON.trash} Tøm dagen</button><div class="row"><button class="btn" data-m="close">Avbryt</button><button class="btn primary" data-m="save">Lagre</button></div></div>
+  </div></div>`;
+  const q = $('#pickQ'); if (q && m.focusPick) { q.focus(); q.setSelectionRange(q.value.length, q.value.length); m.focusPick = false; }
+}
+function pickerHtml() {
+  const m = modalState; const q = m.pickQuery.toLowerCase();
+  const used = new Map(); Object.entries(S.days).forEach(([k, d]) => { if (d.ideaId) used.set(d.ideaId, +k.slice(1)); });
+  const fav = new Set(S.extra.favorites);
+  let list = allIdeas().filter(i => !q || (i.t + ' ' + i.d + ' ' + CATS[i.c]).toLowerCase().includes(q));
+  list.sort((a, b) => (fav.has(b.id) - fav.has(a.id)) || (used.has(a.id) - used.has(b.id)));
+  return `<div class="stack"><div class="row" style="justify-content:space-between"><span class="label">Velg fra idébanken</span>${m.d.title ? `<button class="btn sm ghost" data-m="unpick">Skjul</button>` : ''}</div>
+    <input class="search" id="pickQ" placeholder="Søk: mel, kosedyr, snill…" value="${esc(m.pickQuery)}">
+    <div class="pick-list">${list.slice(0, 60).map(i => `<button class="pick" data-pickid="${i.id}"><b>${fav.has(i.id) ? '★ ' : ''}${esc(i.t)}</b><span class="small muted">${CATS[i.c] || 'Egen idé'} · innsats ${dots(i.e, 'effort')} · rot ${dots(i.m, 'mess')}${used.has(i.id) ? ` · <span class="used-in">brukt dag ${used.get(i.id)}</span>` : ''}</span></button>`).join('') || '<p class="muted small">Ingen treff. Skriv din egen nedenfor.</p>'}</div></div>`;
+}
+function readModalFields() {
+  const m = modalState; if (!m) return; const d = m.d;
+  const v = (id) => { const el = document.getElementById(id); return el ? el.value : undefined; };
+  if (m.tab === 'plan') {
+    d.title = v('f-title').trim(); d.description = v('f-desc').trim(); d.prep = v('f-prep').trim();
+    d.materials = v('f-mat').split(',').map(s => s.trim()).filter(Boolean);
+  } else {
+    d.log = v('f-log').trim(); d.quote = v('f-quote').trim(); d.note = v('f-note').trim();
+  }
+}
+function saveModal() {
+  readModalFields(); const { n, d } = modalState;
+  if (!d.title && !d.log && !(d.photos || []).length) { delete S.days[dayKey(n)]; }
+  else { if (!d.status) d.status = d.title ? 'planlagt' : 'tom'; if (!d.title && d.status === 'planlagt') d.status = 'tom'; S.days[dayKey(n)] = d; }
+  saveDay(n); closeModal(); render(); toast('Lagret');
+}
+async function addPhotos(files) {
+  const m = modalState; if (!m) return; readModalFields();
+  m.d.photos = m.d.photos || [];
+  for (const f of files) {
+    if (!f.type.startsWith('image/')) continue;
+    try {
+      const blob = await shrinkImage(f, ASSETS ? 1600 : 900, ASSETS ? 0.85 : 0.7);
+      if (ASSETS && mode === 'db') {
+        toast('Laster opp bilde…');
+        const r = await ASSETS.upload(blob);
+        m.d.photos.push({ id: r.id });
+      } else {
+        if (m.d.photos.length >= 3) { toast('Maks tre bilder per dag når de lagres lokalt'); break; }
+        m.d.photos.push({ data: await blobToDataUrl(blob) });
+      }
+    } catch (e) { console.warn(e); toast('Fikk ikke lagt til bildet. Prøv et mindre bilde.'); }
+  }
+  if (modalState === m) drawModal();
+}
+function shrinkImage(file, max, q) {
+  return new Promise((res, rej) => {
+    const img = new Image(); const url = URL.createObjectURL(file);
+    img.onload = () => { const s = Math.min(1, max / Math.max(img.width, img.height)); const c = document.createElement('canvas'); c.width = Math.round(img.width * s); c.height = Math.round(img.height * s); c.getContext('2d').drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(url); c.toBlob(b => b ? res(b) : rej(new Error('blob')), 'image/jpeg', q); };
+    img.onerror = () => { URL.revokeObjectURL(url); rej(new Error('img')); };
+    img.src = url;
+  });
+}
+function blobToDataUrl(b) { return new Promise((res) => { const r = new FileReader(); r.onload = () => res(r.result); r.readAsDataURL(b); }); }
+
+/* ===================== Idébank ===================== */
+const ideaFilter = { q: '', cat: 'alle', effort: 0, kindOnly: false, favOnly: false, unused: false };
+VIEWS.ideer = () => {
+  const used = new Map(); Object.entries(S.days).forEach(([k, d]) => { if (d.ideaId) used.set(d.ideaId, +k.slice(1)); });
+  const fav = new Set(S.extra.favorites); const f = ideaFilter; const q = f.q.toLowerCase();
+  const all = allIdeas();
+  const list = all.filter(i => (f.cat === 'alle' || i.c === f.cat || (f.cat === 'egne' && i.custom)) && (!f.effort || i.e <= f.effort) && (!f.favOnly || fav.has(i.id)) && (!f.unused || !used.has(i.id)) && (!f.kindOnly || i.m === 1) && (!q || (i.t + ' ' + i.d + ' ' + (i.mat || []).join(' ')).toLowerCase().includes(q)));
+  const catBtns = [['alle', 'Alle'], ...Object.entries(CATS), ...(S.extra.customIdeas.length ? [['egne', 'Mine egne']] : [])];
+  return `<section class="view">
+    <div class="view-head"><div class="stack" style="gap:4px"><h2>Idébanken</h2><p>${all.length} rampestreker sortert etter sted og type. Prikkene viser innsats (grønn) og hvor mye det blir å rydde (rød).</p></div>
+      <div class="row"><button class="btn" data-act="random">${ICON.dice} Tilfeldig idé</button><button class="btn primary" data-act="newidea">${ICON.plus} Egen idé</button></div></div>
+    <div class="toolbar">
+      <input class="search" id="ideaQ" placeholder="Søk i ideer og materialer…" value="${esc(f.q)}" aria-label="Søk">
+      <div class="seg">${catBtns.map(([k, l]) => `<button class="chip chip-toggle" data-cat="${k}" aria-pressed="${f.cat === k}">${l}</button>`).join('')}</div>
+      <div class="seg">
+        <button class="chip chip-toggle" data-flt="effort" aria-pressed="${f.effort === 1}">Kjapp (5 min)</button>
+        <button class="chip chip-toggle" data-flt="kindOnly" aria-pressed="${f.kindOnly}">Lite rydding</button>
+        <button class="chip chip-toggle" data-flt="unused" aria-pressed="${f.unused}">Ikke brukt ennå</button>
+        <button class="chip chip-toggle" data-flt="favOnly" aria-pressed="${f.favOnly}">★ Favoritter (${fav.size})</button>
+      </div>
+    </div>
+    <div class="small muted">${list.length} treff</div>
+    <div class="ideas">${list.map(i => `<article class="card idea">
+      <h3><span>${esc(i.t)}</span><button class="fav" data-fav="${i.id}" aria-pressed="${fav.has(i.id)}" aria-label="Favoritt">${ICON.star}</button></h3>
+      <div class="meta"><span class="chip ${i.c === 'snill' ? 'ok' : i.c === 'stunt' ? 'berry' : ''}">${CATS[i.c] || 'Egen idé'}</span><span>Innsats ${dots(i.e, 'effort')}</span><span>Rot ${dots(i.m, 'mess')}</span><span>ca. ${i.min} min</span></div>
+      <p class="desc">${esc(i.d)}${(i.tags || []).includes('krever-sno') ? ' <span class="chip plain">krever snø</span>' : ''}${(i.tags || []).includes('kveld-før') ? ' <span class="chip plain">start kvelden før</span>' : ''}</p>
+      <div class="stack" style="gap:8px">${(i.mat || []).length ? `<div class="small muted">Du trenger: ${esc(i.mat.join(', '))}</div>` : `<div class="small muted">Ingen materialer</div>`}
+        <div class="row">${used.has(i.id) ? `<span class="used-in">Brukt på dag ${used.get(i.id)}</span>` : `<button class="btn sm" data-assign="${i.id}">${ICON.plus} Legg i kalenderen</button>`}${i.custom ? `<button class="btn sm ghost danger" data-delidea="${i.id}">Slett</button>` : ''}</div></div>
+    </article>`).join('') || `<div class="empty">${ICON.bulb}<p>Ingen ideer passer filtrene. Prøv å fjerne noen.</p></div>`}</div>
+  </section>`;
+};
+VIEWS.ideer.after = () => {
+  const q = $('#ideaQ'); if (q && ideaFilter.focus) { q.focus(); q.setSelectionRange(q.value.length, q.value.length); ideaFilter.focus = false; }
+};
+
+function openAssign(ideaId) {
+  const idea = ideaById(ideaId); if (!idea) return;
+  const N = totalDays(); const dn = Math.max(1, dayNumberToday() + 1);
+  let opts = ''; for (let i = 1; i <= N; i++) { const d = getDay(i); const dt = dateOf(i); opts += `<button class="pick" data-assignto="${i}" ${i < dn ? 'style="opacity:.6"' : ''}><b>Dag ${i} · ${fmtDate(dt)}${isWeekend(dt) ? ' (helg)' : ''}</b><span class="small muted">${d.title ? 'Erstatter: ' + esc(d.title) : 'Ledig'}</span></button>`; }
+  $('#modalRoot').innerHTML = `<div class="modal-wrap" data-m="backdrop"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="aTitle">
+    <div class="modal-head"><div><div class="label">Legg i kalenderen</div><h2 id="aTitle">${esc(idea.t)}</h2></div><button class="icon-btn modal-close" data-m="close" aria-label="Lukk">${ICON.x}</button></div>
+    <div class="pick-list" style="max-height:60vh">${opts}</div></div></div>`;
+  modalState = null; $('#modalRoot').dataset.assign = ideaId; document.body.style.overflow = 'hidden';
+}
+function openNewIdea() {
+  $('#modalRoot').innerHTML = `<div class="modal-wrap" data-m="backdrop"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="nTitle">
+    <div class="modal-head"><h2 id="nTitle">Ny egen idé</h2><button class="icon-btn modal-close" data-m="close" aria-label="Lukk">${ICON.x}</button></div>
+    <form id="newIdeaForm" class="form-grid">
+      <label class="field full"><span>Tittel</span><input class="input" id="n-t" required placeholder="F.eks. Nissen har pyntet katten"></label>
+      <label class="field full"><span>Beskrivelse</span><textarea class="input" id="n-d"></textarea></label>
+      <label class="field"><span>Kategori</span><select class="input" id="n-c">${Object.entries(CATS).map(([k, l]) => `<option value="${k}">${l}</option>`).join('')}</select></label>
+      <label class="field"><span>Tid (minutter)</span><input class="input" id="n-min" type="number" min="1" value="10"></label>
+      <label class="field"><span>Innsats</span><select class="input" id="n-e"><option value="1">Lav</option><option value="2">Middels</option><option value="3">Høy</option></select></label>
+      <label class="field"><span>Rydding etterpå</span><select class="input" id="n-m"><option value="1">Lite</option><option value="2">Noe</option><option value="3">Mye</option></select></label>
+      <label class="field full"><span>Materialer (skill med komma)</span><input class="input" id="n-mat"></label>
+      <div class="full row" style="justify-content:flex-end"><button type="button" class="btn" data-m="close">Avbryt</button><button class="btn primary" type="submit">Lagre idé</button></div>
+    </form></div></div>`;
+  document.body.style.overflow = 'hidden';
+  $('#n-t').focus();
+}
+
+/* ===================== Handleliste ===================== */
+VIEWS.handleliste = () => {
+  const N = totalDays(); const groups = new Map();
+  for (let i = 1; i <= N; i++) { const d = getDay(i); const st = dayStatus(d); if (st === 'utfort' || st === 'hoppet') continue; (d.materials || []).forEach(mt => { const k = mt.toLowerCase(); if (!groups.has(k)) groups.set(k, { name: mt, days: [] }); groups.get(k).days.push(i); }); }
+  const items = [...groups.entries()].sort((a, b) => a[1].days[0] - b[1].days[0]);
+  const chk = S.extra.shopChecked; const custom = S.extra.shopCustom;
+  const left = items.filter(([k]) => !chk[k]).length + custom.filter(c => !c.done).length;
+  return `<section class="view">
+    <div class="view-head"><div class="stack" style="gap:4px"><h2>Handleliste</h2><p>Materialene hentes automatisk fra dagene du har planlagt. Kryss av det du har.</p></div>
+      <div class="row"><button class="btn" data-act="copyshop">${ICON.copy} Kopier lista</button></div></div>
+    <div class="grid-2">
+      <div class="card stack"><div class="row" style="justify-content:space-between"><h3>Fra kalenderen</h3><span class="chip ${left ? 'gold' : 'ok'}">${left ? left + ' igjen' : 'Alt i boks'}</span></div>
+        <div class="list">${items.map(([k, g]) => `<div class="shop-item"><label class="check ${chk[k] ? 'done' : ''}"><input type="checkbox" data-shop="${esc(k)}" ${chk[k] ? 'checked' : ''}><span>${esc(g.name)}</span></label><span class="shop-days">dag ${g.days.join(', ')}</span></div>`).join('') || `<div class="empty">${ICON.cart}<p>Ingen materialer ennå. Planlegg noen dager i kalenderen.</p><a class="btn" href="#kalender">Til kalenderen</a></div>`}</div></div>
+      <div class="card stack"><h3>Egne ting</h3>
+        <form id="shopForm" class="row"><input class="input" id="shopNew" placeholder="F.eks. ekstra nissefigur" style="flex:1;min-width:0"><button class="btn green" type="submit">${ICON.plus} Legg til</button></form>
+        <div class="list">${custom.map((c, i) => `<div class="shop-item"><label class="check ${c.done ? 'done' : ''}"><input type="checkbox" data-shopc="${i}" ${c.done ? 'checked' : ''}><span>${esc(c.t)}</span></label><button class="btn sm ghost" data-shopdel="${i}" aria-label="Fjern">${ICON.x}</button></div>`).join('') || '<p class="muted small">Tomt. Legg til ting som ikke hører til en bestemt dag.</p>'}</div>
+        <div class="callout green small"><b>Basislager som redder mange kvelder</b><span>Mel, maskeringsteip, post-it-lapper, hyssing, whiteboardtusj, konditorfarge, marshmallows og tannpirkere.</span></div>
+      </div>
+    </div>
+  </section>`;
+};
+function shopText() {
+  const N = totalDays(); const seen = new Set(); const out = [];
+  for (let i = 1; i <= N; i++) { const d = getDay(i); if (['utfort', 'hoppet'].includes(dayStatus(d))) continue; (d.materials || []).forEach(m => { const k = m.toLowerCase(); if (!seen.has(k) && !S.extra.shopChecked[k]) { seen.add(k); out.push('☐ ' + m); } }); }
+  S.extra.shopCustom.filter(c => !c.done).forEach(c => out.push('☐ ' + c.t));
+  return 'Handleliste for rampenissen\n' + (out.join('\n') || '(alt er handlet)');
+}
+
+/* ===================== Dagbok ===================== */
+VIEWS.dagbok = () => {
+  const N = totalDays(); const entries = [];
+  for (let i = N; i >= 1; i--) { const d = getDay(i); if (dayStatus(d) === 'utfort' || d.log || (d.photos || []).length) entries.push(i); }
+  const rated = entries.map(getDay).filter(d => d.rating);
+  const best = rated.slice().sort((a, b) => b.rating - a.rating)[0];
+  const reacts = {}; entries.forEach(i => (getDay(i).reactions || []).forEach(r => reacts[r] = (reacts[r] || 0) + 1));
+  const topReact = Object.entries(reacts).sort((a, b) => b[1] - a[1])[0];
+  const photos = entries.reduce((a, i) => a + (getDay(i).photos || []).length, 0);
+  return `<section class="view">
+    <div class="view-head"><div class="stack" style="gap:4px"><h2>Nissens dagbok</h2><p>Alt du logger blir en minnebok for desember: hva som skjedde, hva barna sa og bildene du tok.</p></div>
+      ${dayNumberToday() >= 1 && dayNumberToday() <= N ? `<button class="btn primary" data-open="${dayNumberToday()}" data-tab="logg">${ICON.book} Logg dagens</button>` : ''}</div>
+    <div class="stats">
+      <div class="stat"><b>${entries.length}</b><span>dager logget</span></div>
+      <div class="stat"><b>${photos}</b><span>bilder</span></div>
+      <div class="stat"><b style="font-size:1.1rem;font-family:var(--f-body);font-weight:700;line-height:1.3">${best ? esc(best.title) : '–'}</b><span>største suksess</span></div>
+      <div class="stat"><b style="font-size:1.1rem;font-family:var(--f-body);font-weight:700;line-height:1.3">${topReact ? esc(topReact[0]) : '–'}</b><span>vanligste reaksjon</span></div>
+    </div>
+    <div class="journal">${entries.map(i => { const d = getDay(i); return `<article class="card entry">
+      <span class="mini-num">${i}</span>
+      <div class="stack" style="min-width:0">
+        <div class="row" style="justify-content:space-between"><div><h3>${esc(d.title || 'Uten tittel')}</h3><div class="small muted">${fmtDate(dateOf(i))}</div></div>
+          <div class="row">${d.rating ? `<span class="stars" aria-label="${d.rating} stjerner">${[1, 2, 3, 4, 5].map(s => `<span style="color:${s <= d.rating ? 'var(--gold)' : 'var(--line)'};width:18px;display:inline-block">${ICON.star}</span>`).join('')}</span>` : ''}<button class="btn sm" data-open="${i}" data-tab="logg">Rediger</button></div></div>
+        ${d.quote ? `<p class="quote">«${esc(d.quote.replace(/^[«"]|[»"]$/g, ''))}»</p>` : ''}
+        ${d.log ? `<p>${esc(d.log)}</p>` : ''}
+        ${(d.reactions || []).length ? `<div class="row">${d.reactions.map(r => `<span class="chip">${esc(r)}</span>`).join('')}</div>` : ''}
+        ${(d.photos || []).length ? `<div class="photos">${d.photos.map(p => `<div class="photo"><img src="${esc(photoSrc(p))}" alt="Bilde fra dag ${i}" loading="lazy"></div>`).join('')}</div>` : ''}
+        ${d.note ? `<p class="small muted">Notat: ${esc(d.note)}</p>` : ''}
+      </div></article>`; }).join('') || `<div class="card empty">${ICON.book}<p>Dagboka er tom. Når nissen har gjort sin første rampestrek, åpner du luka og logger hvordan det gikk.</p><a class="btn" href="#kalender">Til kalenderen</a></div>`}</div>
+  </section>`;
+};
+
+/* ===================== Brev ===================== */
+const letterState = { tpl: 'ankomst', text: null };
+VIEWS.brev = () => {
+  const v = { kids: kidsText(), nisse: S.settings.nisseName || 'Rampenissen' };
+  if (letterState.text === null) letterState.text = LETTERS[letterState.tpl].text(v);
+  return `<section class="view">
+    <div class="view-head"><div class="stack" style="gap:4px"><h2>Nissebrev</h2><p>Velg en mal, juster teksten og skriv den av for hånd eller kopier den. Navnene hentes fra oppsettet.</p></div></div>
+    <div class="seg">${Object.entries(LETTERS).map(([k, l]) => `<button class="chip chip-toggle" data-tpl="${k}" aria-pressed="${letterState.tpl === k}">${l.name}</button>`).join('')}</div>
+    <div class="grid-2">
+      <div class="card stack"><label class="field"><span>Teksten</span><textarea class="input" id="letterText" style="min-height:340px">${esc(letterState.text)}</textarea></label>
+        <div class="row"><button class="btn green" data-act="copyletter">${ICON.copy} Kopier</button>${inTopFrame() ? `<button class="btn" data-act="printletter">${ICON.print} Skriv ut</button>` : ''}<button class="btn ghost" data-act="resetletter">Tilbakestill malen</button></div>
+        ${S.settings.kids.length ? '' : `<p class="small muted">Tips: legg inn barnas navn under <a href="#oppsett">Oppsett</a>, så settes de inn automatisk.</p>`}</div>
+      <div class="letter" id="letterPreview">${esc(letterState.text)}<span class="sig">Hilsen ${esc(v.nisse)}</span></div>
+    </div>
+  </section>`;
+};
+
+/* ===================== Oppsett ===================== */
+VIEWS.oppsett = () => {
+  const s = S.settings;
+  return `<section class="view">
+    <div class="view-head"><div class="stack" style="gap:4px"><h2>Oppsett og tips</h2><p>Nissens navn, barna og datoene styrer resten av appen.</p></div></div>
+    <div class="grid-2">
+      <div class="card stack"><h3>Nissen og familien</h3>
+        <div class="form-grid">
+          <label class="field"><span>Nissens navn</span><input class="input" id="s-name" value="${esc(s.nisseName)}"></label>
+          <label class="field"><span>Daglig påminnelse</span><input class="input" type="time" id="s-rem" value="${esc(s.reminderTime)}"></label>
+          <label class="field full"><span>Barnas navn (skill med komma)</span><input class="input" id="s-kids" value="${esc(s.kids.join(', '))}" placeholder="Emma, Jonas"></label>
+          <label class="field"><span>Nissen kommer</span><input class="input" type="date" id="s-start" value="${esc(s.startDate)}"></label>
+          <label class="field"><span>Nissen reiser</span><input class="input" type="date" id="s-end" value="${esc(s.endDate)}"></label>
+          <label class="field full"><span>Huskelapp (gjemmesteder, regler, avtaler med partner)</span><textarea class="input" id="s-notes" placeholder="Nissefiguren ligger øverst i garderobeskapet">${esc(s.notes)}</textarea></label>
+        </div>
+        <div class="row"><button class="btn primary" data-act="savesettings">Lagre</button></div>
+      </div>
+      <div class="stack">
+        <div class="card stack"><h3>Gylne regler for rampenisse-foreldre</h3><ol class="tip-list">${TIPS.map(([t, d]) => `<li><div><b>${t}</b><p class="small muted">${d}</p></div></li>`).join('')}</ol></div>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="card stack"><h3>Lagring og deling</h3>
+        <p class="small muted">${mode === 'db' ? 'Planen lagres i skyen sammen med denne siden. Del siden med partneren din som redaktør, så kan dere planlegge og logge sammen fra hver deres telefon.' : 'Planen lagres i nettleseren på denne enheten. Ta en sikkerhetskopi innimellom.'}</p>
+        <div class="row"><button class="btn" data-act="export">Sikkerhetskopi</button><label class="btn">Gjenopprett fra fil<input type="file" accept=".json,application/json" id="importFile" hidden></label></div>
+        <textarea class="input" id="exportBox" hidden readonly style="min-height:120px;font-family:ui-monospace,monospace;font-size:.75rem"></textarea>
+        <div class="row" id="exportActions" hidden><button class="btn sm green" data-act="copyexport">${ICON.copy} Kopier</button>${DOWNLOADS || inTopFrame() ? `<button class="btn sm" data-act="downloadexport">Last ned fil</button>` : ''}</div>
+      </div>
+      <div class="card stack"><h3>Utseende</h3>
+        <label class="check"><input type="checkbox" id="p-snow" ${prefs.snow ? 'checked' : ''}><span>Snøfall i bakgrunnen</span></label>
+        <hr style="border:0;border-top:1px solid var(--line);width:100%">
+        <details><summary class="danger" style="color:var(--berry)">Nullstill alt</summary>
+          <div class="stack" style="margin-top:10px"><p class="small muted">Sletter alle dager, egne ideer og handlelista. Ta sikkerhetskopi først.</p>
+          <label class="field"><span>Skriv NULLSTILL for å bekrefte</span><input class="input" id="resetConfirm"></label>
+          <button class="btn danger" data-act="reset">Slett alt</button></div></details>
+      </div>
+    </div>
+  </section>`;
+};
+
+/* ===================== Hendelser ===================== */
+document.addEventListener('click', async (e) => {
+  const t = e.target.closest('button, [data-m], a, input'); if (!t) return;
+  const ds = t.dataset;
+  // Modal
+  if (ds.m === 'backdrop' && e.target === t) { closeModal(); return; }
+  if (ds.m === 'close') { e.preventDefault(); closeModal(); return; }
+  if (ds.m === 'save') { saveModal(); return; }
+  if (ds.m === 'clear') { const n = modalState.n; const d = S.days[dayKey(n)]; if (d && ASSETS) (d.photos || []).forEach(p => p.id && ASSETS.delete(p.id).catch(() => { })); delete S.days[dayKey(n)]; saveDay(n); closeModal(); render(); toast(`Dag ${n} er tømt`); return; }
+  if (ds.m === 'pick') { readModalFields(); modalState.picking = true; drawModal(); return; }
+  if (ds.m === 'unpick') { readModalFields(); modalState.picking = false; drawModal(); return; }
+  if (ds.mtab) { readModalFields(); modalState.tab = ds.mtab; drawModal(); return; }
+  if (ds.pickid) { const i = ideaById(ds.pickid); const d = modalState.d; Object.assign(d, { ideaId: i.id, title: i.t, description: i.d, materials: [...(i.mat || [])] }); if (!d.status || d.status === 'tom') d.status = 'planlagt'; modalState.picking = false; drawModal(); return; }
+  if (ds.statusSet) { readModalFields(); modalState.d.status = ds.statusSet; drawModal(); return; }
+  if (ds.rate) { readModalFields(); const r = +ds.rate; modalState.d.rating = modalState.d.rating === r ? 0 : r; if (r && modalState.d.title) modalState.d.status = 'utfort'; drawModal(); return; }
+  if (ds.react) { readModalFields(); const a = modalState.d.reactions = modalState.d.reactions || []; const i = a.indexOf(ds.react); i >= 0 ? a.splice(i, 1) : a.push(ds.react); drawModal(); return; }
+  if (ds.delphoto) { readModalFields(); const p = modalState.d.photos.splice(+ds.delphoto, 1)[0]; if (p && p.id && ASSETS) ASSETS.delete(p.id).catch(() => { }); drawModal(); return; }
+  if (ds.assignto) { const id = $('#modalRoot').dataset.assign; const idea = ideaById(id); const n = +ds.assignto; closeModal(); applyIdea(n, idea); toast(`«${idea.t}» lagt på dag ${n}`); return; }
+  // Felles
+  if (ds.open) { openDay(+ds.open, ds.tab); return; }
+  if (ds.mark) { const n = +ds.mark; S.days[dayKey(n)] = { ...getDay(n), status: ds.status }; saveDay(n); render(); toast('Merket som klar'); return; }
+  if (ds.assign) { openAssign(ds.assign); return; }
+  if (ds.fav) { const f = S.extra.favorites; const i = f.indexOf(ds.fav); i >= 0 ? f.splice(i, 1) : f.push(ds.fav); saveExtra(); render(); return; }
+  if (ds.cat) { ideaFilter.cat = ds.cat; render(); return; }
+  if (ds.flt) { if (ds.flt === 'effort') ideaFilter.effort = ideaFilter.effort ? 0 : 1; else ideaFilter[ds.flt] = !ideaFilter[ds.flt]; render(); return; }
+  if (ds.delidea) { S.extra.customIdeas = S.extra.customIdeas.filter(i => i.id !== ds.delidea); saveExtra(); render(); toast('Ideen er slettet'); return; }
+  if (ds.tpl) { letterState.tpl = ds.tpl; letterState.text = null; render(); return; }
+  if (ds.shopdel) { S.extra.shopCustom.splice(+ds.shopdel, 1); saveExtra(); render(); return; }
+  switch (ds.act) {
+    case 'autofill': autofill(); break;
+    case 'reteaser': render(); break;
+    case 'random': { const used = new Set(Object.values(S.days).map(d => d.ideaId)); const pool = allIdeas().filter(i => !used.has(i.id)); const i = pool[Math.floor(Math.random() * pool.length)]; if (i) { ideaFilter.q = i.t; ideaFilter.cat = 'alle'; render(); } break; }
+    case 'newidea': openNewIdea(); break;
+    case 'copyshop': copyText(shopText()); break;
+    case 'copyletter': copyText($('#letterText').value + '\n\nHilsen ' + (S.settings.nisseName || 'Rampenissen'), $('#letterText')); break;
+    case 'printletter': window.print(); break;
+    case 'resetletter': letterState.text = null; render(); break;
+    case 'savesettings': saveSettingsForm(); break;
+    case 'export': { const box = $('#exportBox'); box.value = JSON.stringify({ app: 'rampenisse', version: 1, exported: new Date().toISOString(), settings: S.settings, extra: S.extra, days: S.days }, null, 1); box.hidden = false; $('#exportActions').hidden = false; break; }
+    case 'copyexport': copyText($('#exportBox').value, $('#exportBox')); break;
+    case 'downloadexport': {
+      const data = $('#exportBox').value; const filename = `rampenisse-${new Date().toISOString().slice(0, 10)}.json`;
+      if (DOWNLOADS) { try { await DOWNLOADS.save({ filename, data }); } catch (err) { if (err && err.code !== 'declined') toast('Nedlasting er ikke tilgjengelig her. Bruk Kopier.'); } }
+      else { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([data], { type: 'application/json' })); a.download = filename; a.click(); }
+      break; }
+    case 'reset': {
+      if (($('#resetConfirm').value || '').trim().toUpperCase() !== 'NULLSTILL') { toast('Skriv NULLSTILL i feltet først'); break; }
+      Object.keys(S.days).forEach(k => { delete S.days[k]; saveDay(+k.slice(1)); });
+      S.extra = defaultExtra(); saveExtra(); toast('Alt er nullstilt'); render(); break; }
+  }
+});
+document.addEventListener('input', (e) => {
+  if (e.target.id === 'pickQ') { modalState.pickQuery = e.target.value; readModalFields(); modalState.focusPick = true; drawModal(); }
+  if (e.target.id === 'ideaQ') { ideaFilter.q = e.target.value; ideaFilter.focus = true; render(); }
+  if (e.target.id === 'letterText') { letterState.text = e.target.value; const p = $('#letterPreview'); p.innerHTML = esc(e.target.value) + `<span class="sig">Hilsen ${esc(S.settings.nisseName || 'Rampenissen')}</span>`; }
+});
+document.addEventListener('change', (e) => {
+  const t = e.target; const ds = t.dataset;
+  if (ds.prep) { S.extra.prepChecked[ds.prep] = t.checked; saveExtra(); render(); }
+  if (ds.shop !== undefined) { S.extra.shopChecked[ds.shop] = t.checked; if (!t.checked) delete S.extra.shopChecked[ds.shop]; saveExtra(); render(); }
+  if (ds.shopc !== undefined) { S.extra.shopCustom[+ds.shopc].done = t.checked; saveExtra(); render(); }
+  if (t.id === 'f-photo') { addPhotos([...t.files]); }
+  if (t.id === 'p-snow') { prefs.snow = t.checked; lsSet(LS_PREF, prefs); snow.toggle(prefs.snow); }
+  if (t.id === 'importFile' && t.files[0]) {
+    const r = new FileReader(); r.onload = () => {
+      try { const d = JSON.parse(r.result); if (d.app !== 'rampenisse') throw new Error('feil fil');
+        Object.keys(S.days).forEach(k => { if (!(d.days || {})[k]) { delete S.days[k]; saveDay(+k.slice(1)); } });
+        S.settings = { ...defaultSettings(), ...d.settings }; S.extra = { ...defaultExtra(), ...d.extra }; S.days = d.days || {};
+        saveSettings(); saveExtra(); Object.keys(S.days).forEach(k => saveDay(+k.slice(1))); render(); toast('Sikkerhetskopien er gjenopprettet');
+      } catch (err) { toast('Filen er ikke en sikkerhetskopi fra denne appen.'); }
+    }; r.readAsText(t.files[0]);
+  }
+});
+document.addEventListener('submit', (e) => {
+  e.preventDefault();
+  if (e.target.id === 'shopForm') { const v = $('#shopNew').value.trim(); if (v) { S.extra.shopCustom.push({ t: v, done: false }); saveExtra(); render(); $('#shopNew').focus(); } }
+  if (e.target.id === 'newIdeaForm') {
+    const idea = { id: 'egen-' + Date.now().toString(36), c: $('#n-c').value, t: $('#n-t').value.trim(), d: $('#n-d').value.trim(), e: +$('#n-e').value, m: +$('#n-m').value, min: +$('#n-min').value || 10, mat: $('#n-mat').value.split(',').map(s => s.trim()).filter(Boolean) };
+    if (!idea.t) return; S.extra.customIdeas.push(idea); saveExtra(); closeModal(); ideaFilter.cat = 'egne'; render(); toast('Ideen er lagt i idébanken');
+  }
+});
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && $('#modalRoot').innerHTML) closeModal(); });
+function saveSettingsForm() {
+  const s = S.settings; const start = $('#s-start').value, end = $('#s-end').value;
+  if (start && end && parseDate(end) < parseDate(start)) { toast('Sluttdatoen må være etter startdatoen'); return; }
+  s.nisseName = $('#s-name').value.trim() || 'Rampenissen'; s.kids = $('#s-kids').value.split(',').map(x => x.trim()).filter(Boolean);
+  s.startDate = start || s.startDate; s.endDate = end || s.endDate; s.reminderTime = $('#s-rem').value || '21:30'; s.notes = $('#s-notes').value;
+  saveSettings(); letterState.text = null; render(); toast('Oppsettet er lagret');
+}
+
+/* ===================== Snøfall ===================== */
+const snow = (() => {
+  const c = document.getElementById('snow'); const ctx = c.getContext('2d'); let flakes = [], raf = null, on = false;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  function size() { const r = window.devicePixelRatio || 1; c.width = innerWidth * r; c.height = innerHeight * r; c.style.width = innerWidth + 'px'; c.style.height = innerHeight + 'px'; ctx.setTransform(r, 0, 0, r, 0, 0); }
+  function make() { const n = Math.min(70, Math.round(innerWidth / 18)); flakes = Array.from({ length: n }, () => ({ x: Math.random() * innerWidth, y: Math.random() * innerHeight, r: Math.random() * 2.2 + .8, s: Math.random() * .5 + .25, w: Math.random() * Math.PI * 2 })); }
+  function color() { return getComputedStyle(document.documentElement).getPropertyValue('--spruce').trim() || '#1f4d3f'; }
+  let col = color();
+  function frame() {
+    ctx.clearRect(0, 0, innerWidth, innerHeight); ctx.fillStyle = col; ctx.globalAlpha = .18;
+    for (const f of flakes) { f.y += f.s; f.w += .01; f.x += Math.sin(f.w) * .3; if (f.y > innerHeight + 5) { f.y = -5; f.x = Math.random() * innerWidth; } ctx.beginPath(); ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2); ctx.fill(); }
+    raf = requestAnimationFrame(frame);
+  }
+  function toggle(v) { on = v && !reduce.matches; cancelAnimationFrame(raf); ctx.clearRect(0, 0, c.width, c.height); if (on) { col = color(); size(); make(); frame(); } }
+  addEventListener('resize', () => { if (on) { size(); make(); } });
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', () => { col = color(); });
+  return { toggle };
+})();
+
+/* ===================== Start ===================== */
+loadLocal();
+render();
+snow.toggle(prefs.snow);
+setSync('local');
+connectCloud();
+</script>
+
+</body>
+</html>
