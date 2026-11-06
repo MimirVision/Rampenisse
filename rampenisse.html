@@ -73,7 +73,10 @@ a { color: var(--berry); }
 .bottom-nav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; background: var(--paper); border-top: 1px solid var(--line); display: grid; grid-template-columns: repeat(6, 1fr); padding-bottom: env(safe-area-inset-bottom, 0px); padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-area-inset-right, 0px); }
 .bottom-nav a { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 2px 7px; text-decoration: none; color: var(--muted); font-size: .7rem; font-weight: 600; }
 .bottom-nav a svg { width: 22px; height: 22px; }
+.bottom-nav .ic { width: 56px; height: 30px; border-radius: 99px; display: grid; place-items: center; transition: background-color .2s ease; }
 .bottom-nav a[aria-current="page"] { color: var(--berry); }
+.bottom-nav a[aria-current="page"] .ic { background: var(--berry-soft); }
+@supports (backdrop-filter: blur(10px)) { .bottom-nav { background: color-mix(in srgb, var(--paper) 86%, transparent); backdrop-filter: saturate(1.4) blur(14px); -webkit-backdrop-filter: saturate(1.4) blur(14px); } }
 @media (min-width: 860px) { .top-nav { display: flex; } .top-actions { margin-left: 8px; } .bottom-nav { display: none; } main { padding-bottom: 48px !important; } }
 
 main { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding-top: 20px; padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
@@ -152,7 +155,7 @@ main { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; paddin
 
 /* Kalender-luker */
 .calendar { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
-@media (max-width: 520px) { .calendar { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; } }
+@media (max-width: 520px) { .calendar { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 7px; } }
 .door { position: relative; aspect-ratio: 1 / 1.08; max-width: 100%; border-radius: 12px; border: 0; padding: 10px; cursor: pointer; text-align: left; display: flex; flex-direction: column; justify-content: space-between; background: var(--door); color: var(--door-ink); box-shadow: inset 0 0 0 2px rgba(255,255,255,.08), var(--shadow); overflow: hidden; transition: transform .15s ease; }
 .door:hover { transform: translateY(-2px); }
 .door::after { content: ""; position: absolute; inset: 6px; border: 1.5px dashed rgba(255,255,255,.22); border-radius: 8px; pointer-events: none; }
@@ -173,7 +176,7 @@ main { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; paddin
 .door.s-utfort .wd, .door.s-klar .wd { color: inherit; }
 .door.is-today { outline: 3px solid var(--gold); outline-offset: 2px; }
 .door .ph { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: .28; }
-@media (max-width: 520px) { .door { padding: 7px; } .door .num { font-size: 1.6rem; } .door .dt { font-size: .7rem; -webkit-line-clamp: 2; } .door .badge { display: none; } }
+@media (max-width: 520px) { .door { padding: 6px; border-radius: 10px; } .door::after { inset: 3px; border-radius: 7px; } .door .num { font-size: 1.4rem; } .door .wd { font-size: .58rem; letter-spacing: .04em; } .door .dt { font-size: .64rem; -webkit-line-clamp: 3; line-height: 1.2; } .door .badge { display: none; } }
 .legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .8rem; color: var(--muted); }
 .legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: -2px; margin-right: 5px; }
 
@@ -214,7 +217,7 @@ textarea.input { min-height: 80px; resize: vertical; }
 /* Modal */
 .modal-wrap { position: fixed; inset: 0; z-index: 50; background: rgba(8,20,18,.55); display: flex; align-items: flex-end; justify-content: center; }
 @media (min-width: 700px) { .modal-wrap { align-items: center; padding: 24px; } }
-.modal { background: var(--paper); width: 100%; max-width: 720px; max-height: 92vh; overflow: auto; border-radius: 20px 20px 0 0; padding: 18px; grid-auto-rows: max-content; padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: max(18px, env(safe-area-inset-right, 0px)); padding-bottom: calc(18px + env(safe-area-inset-bottom, 0px)); display: grid; gap: 16px; }
+.modal { background: var(--paper); width: 100%; max-width: 720px; max-height: 92vh; max-height: 92dvh; overflow: auto; overscroll-behavior: contain; border-radius: 20px 20px 0 0; padding: 18px; grid-auto-rows: max-content; padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: max(18px, env(safe-area-inset-right, 0px)); padding-bottom: calc(18px + env(safe-area-inset-bottom, 0px)); display: grid; gap: 16px; }
 @media (min-width: 700px) { .modal { border-radius: 20px; } }
 .modal-head { display: flex; gap: 12px; align-items: center; }
 .modal-head .mini-num { width: 52px; height: 52px; font-size: 1.6rem; }
@@ -259,7 +262,37 @@ textarea.input { min-height: 80px; resize: vertical; }
 .tip-list li::before { counter-increment: tip; content: counter(tip); width: 28px; height: 28px; border-radius: 50%; background: var(--berry-soft); color: var(--berry); font-weight: 700; display: grid; place-items: center; font-size: .85rem; }
 .tip-list { padding: 0; margin: 0; }
 details summary { cursor: pointer; font-weight: 700; }
-@media (prefers-reduced-motion: reduce) { .door { transition: none; } .door:hover { transform: none; } }
+/* App-følelse på telefon */
+html { -webkit-tap-highlight-color: transparent; overscroll-behavior-y: none; }
+body { overscroll-behavior-y: none; }
+button, a, .door, .bottom-nav, .top, .chip, .tabs, label.check, .stat, .legend, .sheet-handle { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+button, a, input, select, textarea, label { touch-action: manipulation; }
+.btn, .chip-toggle, .pick, .mini-day, .stat { transition: transform .1s ease, background-color .15s, border-color .15s; }
+.btn:active, .chip-toggle:active, .pick:active, .mini-day:active, .icon-btn:active { transform: scale(.96); }
+.door:active { transform: scale(.97); }
+@media (max-width: 859px) { .input, .search, select.input, textarea.input { font-size: 16px; } }
+.view { animation: viewIn .22s ease-out both; }
+@keyframes viewIn { from { opacity: .4; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.modal-wrap { animation: fadeIn .2s ease-out both; }
+.modal { animation: sheetIn .28s cubic-bezier(.2,.85,.25,1) both; }
+@keyframes fadeIn { from { background: rgba(8,20,18,0); } }
+@keyframes sheetIn { from { transform: translateY(60px); opacity: .5; } to { transform: none; opacity: 1; } }
+.sheet-handle { width: 42px; height: 5px; border-radius: 99px; background: var(--line); margin: -6px auto -6px; touch-action: none; }
+@media (min-width: 700px) { .sheet-handle { display: none; } }
+.modal.swiping { transition: none; animation: none; }
+.modal.settling { transition: transform .22s ease; }
+
+/* Dra og slipp i kalenderen */
+.door.lifting { transform: scale(.94); transition: transform .38s ease; }
+.door.drag-src { opacity: .3; transform: scale(.92); }
+.door.drop-target { outline: 3px dashed var(--gold); outline-offset: 2px; transform: scale(1.05); }
+.drag-ghost { position: fixed; z-index: 70; pointer-events: none; margin: 0; transform: scale(1.08) rotate(-3deg); box-shadow: 0 18px 40px rgba(0,0,0,.35); transition: none !important; opacity: .96; }
+body.dragging, body.dragging * { cursor: grabbing !important; }
+.drag-hint { display: flex; gap: 8px; align-items: center; font-size: .82rem; color: var(--muted); }
+.drag-hint svg { width: 18px; height: 18px; flex: none; color: var(--gold); }
+.toast .t-act { background: none; border: 0; color: var(--gold); font-weight: 700; margin-left: 10px; cursor: pointer; padding: 2px 4px; }
+
+@media (prefers-reduced-motion: reduce) { .door, .door.lifting { transition: none; } .door:hover { transform: none; } .view, .modal, .modal-wrap { animation: none; } }
 @media print {
   .top, .bottom-nav, #snow, .no-print { display: none !important; }
   main { padding: 0 !important; }
@@ -572,7 +605,12 @@ function allIdeas() { return [...IDEAS, ...(S.extra.customIdeas || []).map(i => 
 function ideaById(id) { return IDEA_BY_ID[id] || (S.extra.customIdeas || []).find(i => i.id === id); }
 function dots(n, cls) { return `<span class="dots ${cls}" aria-label="${n} av 3">${[1, 2, 3].map(i => `<i class="${i <= n ? 'on' : ''}"></i>`).join('')}</span>`; }
 function photoSrc(p) { return p.data || p.url || (p.id ? '/_blob/' + p.id : ''); }
-function toast(msg) { const r = $('#toastRoot'); r.innerHTML = `<div class="toast" role="status">${esc(msg)}</div>`; clearTimeout(toast.t); toast.t = setTimeout(() => r.innerHTML = '', 2800); }
+let toastAction = null;
+function toast(msg, action) {
+  const r = $('#toastRoot'); toastAction = action || null;
+  r.innerHTML = `<div class="toast" role="status">${esc(msg)}${action ? `<button class="t-act" data-act="toastaction">${esc(action.label)}</button>` : ''}</div>`;
+  clearTimeout(toast.t); toast.t = setTimeout(() => { r.innerHTML = ''; toastAction = null; }, action ? 5000 : 2800);
+}
 async function copyText(text, el) {
   try { await navigator.clipboard.writeText(text); toast('Kopiert'); }
   catch (e) { if (el) { el.focus(); el.select && el.select(); } toast('Marker teksten og kopier manuelt'); }
@@ -592,7 +630,7 @@ function route() { const h = location.hash.replace('#', ''); return [...ROUTES.m
 function renderNav() {
   const cur = route();
   $('#topNav').innerHTML = ROUTES.map(r => `<a href="#${r.id}" ${r.id === cur ? 'aria-current="page"' : ''}>${r.label}</a>`).join('');
-  $('#bottomNav').innerHTML = ROUTES.map(r => `<a href="#${r.id}" ${r.id === cur ? 'aria-current="page"' : ''}>${ICON[r.icon]}<span>${r.short}</span></a>`).join('');
+  $('#bottomNav').innerHTML = ROUTES.map(r => `<a href="#${r.id}" ${r.id === cur ? 'aria-current="page"' : ''}><span class="ic">${ICON[r.icon]}</span><span>${r.short}</span></a>`).join('');
   $('#brandName').textContent = S.settings.nisseName && S.settings.nisseName !== 'Rampenissen' ? S.settings.nisseName + 's verksted' : 'Rampenisse-verkstedet';
 }
 const VIEWS = {};
@@ -603,15 +641,18 @@ function render() {
   const app = $('#app');
   app.innerHTML = VIEWS[r]();
   if (VIEWS[r].after) VIEWS[r].after();
-  if (lastRoute !== r) { window.scrollTo(0, 0); lastRoute = r; }
+  if (lastRoute !== r) { window.scrollTo(0, scrollMemory[r] || 0); lastRoute = r; }
 }
 // Ved synk fra skyen: ikke tegn på nytt mens brukeren skriver i et felt i hovedvisningen
 function renderSoft() {
+  if (drag.active || drag.pending) { drag.renderLater = true; return; }
   const a = document.activeElement;
   if (a && $('#app').contains(a) && /INPUT|TEXTAREA|SELECT/.test(a.tagName)) { renderNav(); return; }
   const y = window.scrollY; render(); window.scrollTo(0, y);
 }
-window.addEventListener('hashchange', () => { closeModal(); render(); });
+const scrollMemory = {};
+window.addEventListener('hashchange', () => { if (lastRoute) scrollMemory[lastRoute] = window.scrollY; closeModal(); haptic(8); render(); });
+function haptic(ms) { try { navigator.vibrate && navigator.vibrate(ms); } catch (e) { } }
 
 /* ===================== Oversikt ===================== */
 function counts() {
@@ -735,7 +776,8 @@ VIEWS.kalender = () => {
     </button>`;
   }
   return `<section class="view">
-    <div class="view-head"><div class="stack" style="gap:4px"><h2>Nissekalenderen</h2><p>Trykk på en luke for å planlegge, forberede og logge dagen. Helgedager er merket i gull.</p></div>
+    <div class="view-head"><div class="stack" style="gap:4px"><h2>Nissekalenderen</h2><p>Trykk på en luke for å planlegge, forberede og logge dagen. Helgedager er merket i gull.</p>
+      <div class="drag-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 9l-3 3 3 3M9 5l3-3 3 3M15 19l-3 3-3-3M19 9l3 3-3 3M2 12h20M12 2v20"/></svg><span>Hold inne en luke og dra den til en annen dag. Står det noe der fra før, bytter de plass.</span></div></div>
       <div class="row">${c.tom ? `<button class="btn primary" data-act="autofill">${ICON.wand} Fyll ${c.tom} tomme dager</button>` : ''}</div></div>
     <div class="legend"><span><i style="background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--line)"></i>Ikke planlagt (${c.tom})</span><span><i style="background:var(--door)"></i>Planlagt (${c.planlagt})</span><span><i style="background:#8a5d0d"></i>Klar (${c.klar})</span><span><i style="background:var(--berry)"></i>Utført (${c.utfort})</span>${c.hoppet ? `<span><i style="background:#6b7a76"></i>Hoppet over (${c.hoppet})</span>` : ''}</div>
     <div class="calendar">${doors}</div>
@@ -812,6 +854,7 @@ function drawModal() {
         <label class="upload">${ICON.camera}<span>Legg til bilde</span><input type="file" accept="image/*" id="f-photo" multiple></label></div></div>`;
   }
   $('#modalRoot').innerHTML = `<div class="modal-wrap" data-m="backdrop"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <div class="sheet-handle" aria-hidden="true"></div>
     <div class="modal-head"><span class="mini-num">${n}</span><div><h2 id="mTitle">${esc(fmtDate(dt))}</h2><div class="small muted">Luke ${n} av ${totalDays()}${isWeekend(dt) ? ' · helg' : ''}</div></div><button class="icon-btn modal-close" data-m="close" aria-label="Lukk">${ICON.x}</button></div>
     <div class="tabs" role="tablist">${tabs.map(([k, l]) => `<button role="tab" aria-selected="${m.tab === k}" data-mtab="${k}">${l}</button>`).join('')}</div>
     ${body}
@@ -914,12 +957,14 @@ function openAssign(ideaId) {
   const N = totalDays(); const dn = Math.max(1, dayNumberToday() + 1);
   let opts = ''; for (let i = 1; i <= N; i++) { const d = getDay(i); const dt = dateOf(i); opts += `<button class="pick" data-assignto="${i}" ${i < dn ? 'style="opacity:.6"' : ''}><b>Dag ${i} · ${fmtDate(dt)}${isWeekend(dt) ? ' (helg)' : ''}</b><span class="small muted">${d.title ? 'Erstatter: ' + esc(d.title) : 'Ledig'}</span></button>`; }
   $('#modalRoot').innerHTML = `<div class="modal-wrap" data-m="backdrop"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="aTitle">
+    <div class="sheet-handle" aria-hidden="true"></div>
     <div class="modal-head"><div><div class="label">Legg i kalenderen</div><h2 id="aTitle">${esc(idea.t)}</h2></div><button class="icon-btn modal-close" data-m="close" aria-label="Lukk">${ICON.x}</button></div>
     <div class="pick-list" style="max-height:60vh">${opts}</div></div></div>`;
   modalState = null; $('#modalRoot').dataset.assign = ideaId; document.body.style.overflow = 'hidden';
 }
 function openNewIdea() {
   $('#modalRoot').innerHTML = `<div class="modal-wrap" data-m="backdrop"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="nTitle">
+    <div class="sheet-handle" aria-hidden="true"></div>
     <div class="modal-head"><h2 id="nTitle">Ny egen idé</h2><button class="icon-btn modal-close" data-m="close" aria-label="Lukk">${ICON.x}</button></div>
     <form id="newIdeaForm" class="form-grid">
       <label class="field full"><span>Tittel</span><input class="input" id="n-t" required placeholder="F.eks. Nissen har pyntet katten"></label>
@@ -1075,6 +1120,7 @@ function installCard() {
 
 /* ===================== Hendelser ===================== */
 document.addEventListener('click', async (e) => {
+  if (drag.suppressClick) { drag.suppressClick = false; e.preventDefault(); e.stopPropagation(); return; }
   const t = e.target.closest('button, [data-m], a, input'); if (!t) return;
   const ds = t.dataset;
   // Modal
@@ -1102,6 +1148,7 @@ document.addEventListener('click', async (e) => {
   if (ds.tpl) { letterState.tpl = ds.tpl; letterState.text = null; render(); return; }
   if (ds.shopdel) { S.extra.shopCustom.splice(+ds.shopdel, 1); saveExtra(); render(); return; }
   switch (ds.act) {
+    case 'toastaction': { const a = toastAction; $('#toastRoot').innerHTML = ''; toastAction = null; if (a) a.fn(); break; }
     case 'autofill': autofill(); break;
     case 'install': if (installEvt) { installEvt.prompt(); installEvt.userChoice.finally(() => { installEvt = null; renderSoft(); }); } break;
     case 'reteaser': render(); break;
@@ -1166,6 +1213,119 @@ function saveSettingsForm() {
   s.startDate = start || s.startDate; s.endDate = end || s.endDate; s.reminderTime = $('#s-rem').value || '21:30'; s.notes = $('#s-notes').value;
   saveSettings(); letterState.text = null; render(); toast('Oppsettet er lagret');
 }
+
+/* ===================== Dra og slipp i kalenderen ===================== */
+const drag = { pending: false, active: false, src: 0, el: null, ghost: null, target: null, x: 0, y: 0, sx: 0, sy: 0, offX: 0, offY: 0, timer: 0, raf: 0, kind: '', suppressClick: false, renderLater: false };
+const doorAt = (el) => el && el.closest ? el.closest('.calendar .door') : null;
+function dragBegin(door, x, y, kind) {
+  Object.assign(drag, { pending: true, active: false, src: +door.dataset.open, el: door, x, y, sx: x, sy: y, kind });
+  if (kind === 'touch') { door.classList.add('lifting'); drag.timer = setTimeout(dragStart, 380); }
+}
+function dragCancelPending() {
+  clearTimeout(drag.timer); if (drag.el) drag.el.classList.remove('lifting'); drag.pending = false;
+  if (drag.renderLater && !drag.active) { drag.renderLater = false; renderSoft(); }
+}
+function dragStart() {
+  if (!drag.pending) return;
+  drag.pending = false; drag.active = true; haptic(18);
+  const el = drag.el, r = el.getBoundingClientRect();
+  drag.offX = drag.sx - r.left; drag.offY = drag.sy - r.top;
+  const g = el.cloneNode(true); g.classList.remove('lifting', 'is-today'); g.classList.add('drag-ghost'); g.removeAttribute('data-open');
+  g.style.width = r.width + 'px'; g.style.height = r.height + 'px';
+  document.body.appendChild(g); drag.ghost = g;
+  el.classList.remove('lifting'); el.classList.add('drag-src'); document.body.classList.add('dragging');
+  dragMove(); drag.raf = requestAnimationFrame(dragAutoScroll);
+}
+function dragMove() {
+  const g = drag.ghost; if (!g) return;
+  g.style.left = (drag.x - drag.offX) + 'px'; g.style.top = (drag.y - drag.offY) + 'px';
+  const t = doorAt(document.elementFromPoint(drag.x, drag.y));
+  const tgt = t && t !== drag.el ? t : null;
+  if (tgt !== drag.target) { if (drag.target) drag.target.classList.remove('drop-target'); if (tgt) { tgt.classList.add('drop-target'); haptic(6); } drag.target = tgt; }
+}
+function dragAutoScroll() {
+  if (!drag.active) return;
+  const topEdge = 110, bottomEdge = innerHeight - (innerWidth < 860 ? 130 : 60);
+  let dy = 0; if (drag.y < topEdge) dy = -Math.ceil((topEdge - drag.y) / 6); else if (drag.y > bottomEdge) dy = Math.ceil((drag.y - bottomEdge) / 6);
+  if (dy) { window.scrollBy(0, Math.max(-22, Math.min(22, dy))); dragMove(); }
+  drag.raf = requestAnimationFrame(dragAutoScroll);
+}
+function dragEnd(drop) {
+  clearTimeout(drag.timer); cancelAnimationFrame(drag.raf);
+  const wasActive = drag.active, wasMouse = drag.kind === 'mouse', from = drag.src, to = drag.target ? +drag.target.dataset.open : 0;
+  if (drag.ghost) drag.ghost.remove();
+  if (drag.el) drag.el.classList.remove('lifting', 'drag-src');
+  if (drag.target) drag.target.classList.remove('drop-target');
+  document.body.classList.remove('dragging');
+  Object.assign(drag, { pending: false, active: false, ghost: null, target: null, el: null });
+  if (wasActive && wasMouse) { drag.suppressClick = true; setTimeout(() => { drag.suppressClick = false; }, 300); }
+  if (wasActive && drop && to && to !== from) moveDay(from, to);
+  else if (drag.renderLater) { drag.renderLater = false; renderSoft(); }
+  drag.renderLater = false;
+}
+function swapDays(a, b) {
+  const ka = dayKey(a), kb = dayKey(b), da = S.days[ka], db = S.days[kb];
+  if (db) S.days[ka] = db; else delete S.days[ka];
+  if (da) S.days[kb] = da; else delete S.days[kb];
+  saveDay(a); saveDay(b);
+}
+function moveDay(from, to) {
+  const swapped = !!getDay(to).title; const title = getDay(from).title;
+  swapDays(from, to); haptic([12, 40, 12]);
+  const y = window.scrollY; render(); window.scrollTo(0, y);
+  const msg = !title ? `Dag ${from} og ${to} byttet plass` : swapped ? `Dag ${from} og ${to} byttet plass` : `«${title}» flyttet til dag ${to}`;
+  toast(msg, { label: 'Angre', fn: () => { swapDays(from, to); const yy = window.scrollY; render(); window.scrollTo(0, yy); toast('Angret'); } });
+}
+// Berøring: hold inne for å løfte luka
+document.addEventListener('touchstart', (e) => {
+  if (e.touches.length !== 1) { if (drag.pending) dragCancelPending(); return; }
+  const d = doorAt(e.target); if (!d) return;
+  const t = e.touches[0]; dragBegin(d, t.clientX, t.clientY, 'touch');
+}, { passive: true });
+document.addEventListener('touchmove', (e) => {
+  if (!drag.pending && !drag.active) return;
+  const t = e.touches[0]; drag.x = t.clientX; drag.y = t.clientY;
+  if (drag.active) { e.preventDefault(); dragMove(); return; }
+  if (Math.hypot(drag.x - drag.sx, drag.y - drag.sy) > 10) dragCancelPending();
+  else if (e.cancelable) e.preventDefault();
+}, { passive: false });
+document.addEventListener('touchend', (e) => {
+  if (drag.active) { if (e.cancelable) e.preventDefault(); dragEnd(true); }
+  else if (drag.pending) dragCancelPending();
+}, { passive: false });
+document.addEventListener('touchcancel', () => { if (drag.active || drag.pending) dragEnd(false); });
+document.addEventListener('contextmenu', (e) => { if (doorAt(e.target)) e.preventDefault(); });
+// Mus: dra direkte
+document.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'mouse' || e.button !== 0) return; const d = doorAt(e.target); if (d) dragBegin(d, e.clientX, e.clientY, 'mouse'); });
+document.addEventListener('pointermove', (e) => {
+  if (e.pointerType !== 'mouse' || (!drag.pending && !drag.active)) return;
+  drag.x = e.clientX; drag.y = e.clientY;
+  if (drag.active) dragMove(); else if (Math.hypot(drag.x - drag.sx, drag.y - drag.sy) > 6) dragStart();
+});
+document.addEventListener('pointerup', (e) => { if (e.pointerType !== 'mouse') return; if (drag.active) dragEnd(true); else if (drag.pending) dragCancelPending(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && drag.active) dragEnd(false); });
+
+/* ===================== Sveip ned for å lukke ark ===================== */
+const sheet = { el: null, y0: 0, dy: 0 };
+document.addEventListener('touchstart', (e) => {
+  if (innerWidth >= 700) return;
+  const m = e.target.closest && e.target.closest('.modal'); if (!m) return;
+  const onGrip = e.target.closest('.sheet-handle, .modal-head');
+  if (!onGrip && m.scrollTop > 0) return;
+  if (!onGrip) return;
+  sheet.el = m; sheet.y0 = e.touches[0].clientY; sheet.dy = 0; m.classList.add('swiping');
+}, { passive: true });
+document.addEventListener('touchmove', (e) => {
+  if (!sheet.el) return;
+  sheet.dy = Math.max(0, e.touches[0].clientY - sheet.y0);
+  sheet.el.style.transform = `translateY(${sheet.dy}px)`;
+  if (e.cancelable) e.preventDefault();
+}, { passive: false });
+document.addEventListener('touchend', () => {
+  const m = sheet.el; if (!m) return; sheet.el = null; m.classList.remove('swiping');
+  if (sheet.dy > 110) { haptic(8); closeModal(); return; }
+  m.classList.add('settling'); m.style.transform = ''; setTimeout(() => m.classList.remove('settling'), 250);
+});
 
 /* ===================== Snøfall ===================== */
 const snow = (() => {

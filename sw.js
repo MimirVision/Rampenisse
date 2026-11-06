@@ -1,6 +1,6 @@
 // Service worker for Rampenisse-verkstedet.
 // Appen hentes fra nettet når du er på nett (alltid nyeste versjon) og fra hurtigbufferen når du er frakoblet.
-const CACHE = 'rampenisse-v1';
+const CACHE = 'rampenisse-v2';
 const CORE = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png', './icons/apple-touch-icon.png'];
 
 self.addEventListener('install', (e) => {

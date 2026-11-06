@@ -6,7 +6,9 @@ cd "$(dirname "$0")/.."
 {
   printf '<!doctype html>\n<html lang="nb">\n<head>\n<meta charset="utf-8">\n'
   printf '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
-  printf '<meta name="theme-color" content="#1f4d3f">\n'
+  printf '<meta name="theme-color" content="#1f4d3f" media="(prefers-color-scheme: light)">\n'
+  printf '<meta name="theme-color" content="#143a31" media="(prefers-color-scheme: dark)">\n'
+  printf '<meta name="format-detection" content="telephone=no">\n'
   printf '<link rel="manifest" href="manifest.webmanifest">\n'
   printf '<link rel="icon" href="icons/icon.svg" type="image/svg+xml">\n'
   printf '<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">\n'
