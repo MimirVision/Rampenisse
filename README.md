@@ -14,4 +14,19 @@ En app for å planlegge, gjennomføre og loggføre rampenisse-desember.
 
 - `rampenisse.html` – selve appen (kildefilen). Publiseres som Claude-artifact, der data lagres i skyen.
 - `index.html` – samme app som et komplett HTML-dokument. Åpnes direkte i nettleseren eller på GitHub Pages; data lagres da i nettleseren.
-- `scripts/build.sh` – lager `index.html` fra `rampenisse.html`. Kjør etter endringer.
+- `manifest.webmanifest`, `sw.js`, `icons/` – det som gjør appen installerbar og frakoblet.
+- `scripts/build.sh` – lager `index.html` og `_site/` fra `rampenisse.html`. Kjør etter endringer.
+- `.github/workflows/pages.yml` – publiserer `_site/` på GitHub Pages.
+
+## Installere som app (PWA)
+
+Appen kan installeres på hjemskjermen og virker uten nett. Den publiseres med GitHub Pages på
+https://mimirvision.github.io/Rampenisse/
+
+Første gang: gå til **Settings → Pages** i repoet og velg **Source: GitHub Actions**. Etter det
+publiseres appen automatisk ved hver push til `main` eller `master`.
+
+- **iPhone:** åpne adressen i Safari, trykk Del og velg «Legg til på Hjem-skjerm».
+- **Android:** åpne adressen i Chrome, trykk menyen og velg «Installer app».
+
+PWA-en lagrer på telefonen. Flytt en plan mellom versjoner med Oppsett → Sikkerhetskopi → Kopier og «Lim inn kopi».

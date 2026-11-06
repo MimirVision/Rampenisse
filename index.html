@@ -4,6 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1f4d3f">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Rampenisse">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
 <body>
@@ -1045,10 +1052,12 @@ VIEWS.oppsett = () => {
     <div class="grid-2">
       <div class="card stack"><h3>Lagring og deling</h3>
         <p class="small muted">${mode === 'db' ? 'Planen lagres i skyen sammen med denne siden. Del siden med partneren din som redaktør, så kan dere planlegge og logge sammen fra hver deres telefon.' : 'Planen lagres i nettleseren på denne enheten. Ta en sikkerhetskopi innimellom.'}</p>
-        <div class="row"><button class="btn" data-act="export">Sikkerhetskopi</button><label class="btn">Gjenopprett fra fil<input type="file" accept=".json,application/json" id="importFile" hidden></label></div>
+        <div class="row"><button class="btn" data-act="export">Sikkerhetskopi</button><label class="btn">Gjenopprett fra fil<input type="file" accept=".json,application/json" id="importFile" hidden></label><button class="btn" data-act="pasteimport">Lim inn kopi</button></div>
+        <div class="stack" id="pasteBox" hidden><textarea class="input" id="importText" placeholder="Lim inn teksten fra Sikkerhetskopi → Kopier" style="min-height:100px;font-family:ui-monospace,monospace;font-size:.75rem"></textarea><div class="row"><button class="btn sm primary" data-act="doimport">Gjenopprett</button></div></div>
         <textarea class="input" id="exportBox" hidden readonly style="min-height:120px;font-family:ui-monospace,monospace;font-size:.75rem"></textarea>
         <div class="row" id="exportActions" hidden><button class="btn sm green" data-act="copyexport">${ICON.copy} Kopier</button>${DOWNLOADS || inTopFrame() ? `<button class="btn sm" data-act="downloadexport">Last ned fil</button>` : ''}</div>
       </div>
+      ${installCard()}
       <div class="card stack"><h3>Utseende</h3>
         <label class="check"><input type="checkbox" id="p-snow" ${prefs.snow ? 'checked' : ''}><span>Snøfall i bakgrunnen</span></label>
         <hr style="border:0;border-top:1px solid var(--line);width:100%">
@@ -1060,6 +1069,25 @@ VIEWS.oppsett = () => {
     </div>
   </section>`;
 };
+
+/* ===================== Installer som app ===================== */
+const PWA_URL = 'https://mimirvision.github.io/Rampenisse/';
+let installEvt = null;
+addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); installEvt = e; if (route() === 'oppsett') renderSoft(); });
+addEventListener('appinstalled', () => { installEvt = null; toast('Appen er installert'); if (route() === 'oppsett') renderSoft(); });
+function isStandalone() { try { return matchMedia('(display-mode: standalone)').matches || navigator.standalone === true; } catch (e) { return false; } }
+function installCard() {
+  if (isStandalone()) return `<div class="card stack"><h3>Installert som app</h3><p class="small muted">Du bruker appen fra hjemskjermen. Den virker også uten nett.</p></div>`;
+  const isPwaHost = location.hostname.endsWith('github.io') || location.protocol === 'http:' || location.protocol === 'https:' && !window.claude;
+  return `<div class="card stack"><h3>Legg appen på hjemskjermen</h3>
+    ${installEvt ? `<div class="row"><button class="btn primary" data-act="install">Installer appen</button></div>` : ''}
+    ${isPwaHost ? `<ul class="small muted" style="margin:0;padding-left:18px;display:grid;gap:4px">
+        <li><b>iPhone:</b> trykk Del-knappen i Safari og velg «Legg til på Hjem-skjerm».</li>
+        <li><b>Android:</b> trykk menyen (⋮) i Chrome og velg «Installer app».</li></ul>`
+      : `<p class="small muted">Appversjonen ligger på <a href="${PWA_URL}" target="_blank" rel="noopener">${PWA_URL.replace('https://', '')}</a>. Åpne den i Safari eller Chrome på telefonen og legg den på hjemskjermen. Den lagrer på telefonen og virker uten nett.</p>
+        <p class="small muted">Planen herfra flytter du over med Sikkerhetskopi → Kopier, og Gjenopprett fra fil i appen.</p>`}
+  </div>`;
+}
 
 /* ===================== Hendelser ===================== */
 document.addEventListener('click', async (e) => {
@@ -1091,6 +1119,7 @@ document.addEventListener('click', async (e) => {
   if (ds.shopdel) { S.extra.shopCustom.splice(+ds.shopdel, 1); saveExtra(); render(); return; }
   switch (ds.act) {
     case 'autofill': autofill(); break;
+    case 'install': if (installEvt) { installEvt.prompt(); installEvt.userChoice.finally(() => { installEvt = null; renderSoft(); }); } break;
     case 'reteaser': render(); break;
     case 'random': { const used = new Set(Object.values(S.days).map(d => d.ideaId)); const pool = allIdeas().filter(i => !used.has(i.id)); const i = pool[Math.floor(Math.random() * pool.length)]; if (i) { ideaFilter.q = i.t; ideaFilter.cat = 'alle'; render(); } break; }
     case 'newidea': openNewIdea(); break;
@@ -1100,6 +1129,8 @@ document.addEventListener('click', async (e) => {
     case 'resetletter': letterState.text = null; render(); break;
     case 'savesettings': saveSettingsForm(); break;
     case 'export': { const box = $('#exportBox'); box.value = JSON.stringify({ app: 'rampenisse', version: 1, exported: new Date().toISOString(), settings: S.settings, extra: S.extra, days: S.days }, null, 1); box.hidden = false; $('#exportActions').hidden = false; break; }
+    case 'pasteimport': $('#pasteBox').hidden = false; $('#importText').focus(); break;
+    case 'doimport': importData($('#importText').value); break;
     case 'copyexport': copyText($('#exportBox').value, $('#exportBox')); break;
     case 'downloadexport': {
       const data = $('#exportBox').value; const filename = `rampenisse-${new Date().toISOString().slice(0, 10)}.json`;
@@ -1125,15 +1156,16 @@ document.addEventListener('change', (e) => {
   if (t.id === 'f-photo') { addPhotos([...t.files]); }
   if (t.id === 'p-snow') { prefs.snow = t.checked; lsSet(LS_PREF, prefs); snow.toggle(prefs.snow); }
   if (t.id === 'importFile' && t.files[0]) {
-    const r = new FileReader(); r.onload = () => {
-      try { const d = JSON.parse(r.result); if (d.app !== 'rampenisse') throw new Error('feil fil');
-        Object.keys(S.days).forEach(k => { if (!(d.days || {})[k]) { delete S.days[k]; saveDay(+k.slice(1)); } });
-        S.settings = { ...defaultSettings(), ...d.settings }; S.extra = { ...defaultExtra(), ...d.extra }; S.days = d.days || {};
-        saveSettings(); saveExtra(); Object.keys(S.days).forEach(k => saveDay(+k.slice(1))); render(); toast('Sikkerhetskopien er gjenopprettet');
-      } catch (err) { toast('Filen er ikke en sikkerhetskopi fra denne appen.'); }
-    }; r.readAsText(t.files[0]);
+    const r = new FileReader(); r.onload = () => importData(r.result); r.readAsText(t.files[0]);
   }
 });
+function importData(text) {
+  try { const d = JSON.parse(text); if (d.app !== 'rampenisse') throw new Error('feil fil');
+    Object.keys(S.days).forEach(k => { if (!(d.days || {})[k]) { delete S.days[k]; saveDay(+k.slice(1)); } });
+    S.settings = { ...defaultSettings(), ...d.settings }; S.extra = { ...defaultExtra(), ...d.extra }; S.days = d.days || {};
+    saveSettings(); saveExtra(); Object.keys(S.days).forEach(k => saveDay(+k.slice(1))); render(); toast('Sikkerhetskopien er gjenopprettet');
+  } catch (err) { toast('Teksten er ikke en sikkerhetskopi fra denne appen.'); }
+}
 document.addEventListener('submit', (e) => {
   e.preventDefault();
   if (e.target.id === 'shopForm') { const v = $('#shopNew').value.trim(); if (v) { S.extra.shopCustom.push({ t: v, done: false }); saveExtra(); render(); $('#shopNew').focus(); } }
@@ -1176,6 +1208,13 @@ render();
 snow.toggle(prefs.snow);
 setSync('local');
 connectCloud();
+</script>
+<script>
+// PWA: offline-støtte og vedvarende lagring (bare i den frittstående versjonen)
+if ('serviceWorker' in navigator && location.protocol === 'https:') {
+  addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+}
+if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
 </script>
 
 </body>
